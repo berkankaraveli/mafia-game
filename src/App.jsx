@@ -1,22 +1,26 @@
 import React, { useState, useRef } from 'react';
 import './App.css';
-import cardBack from './assets/cards.png';
-import cardFront from './assets/cards1.png';
+
+// Компоненти
+import Indicator from './components/Indicator';
+import Carousel from './components/Carousel';
+import RevealCard from './components/RevealCard';
+import Explosion from './components/Explosion'; // <-- Новият компонент
+
+// Логика
+import { createExplosion } from './utils/effects'; // <-- Изнесената логика
 
 function App() {
-  // Състояния (State)
-  const [phase, setPhase] = useState('idle'); // idle, spinning, selected, reveal
+  const [phase, setPhase] = useState('idle');
   const [resultText, setResultText] = useState('');
   const [showResult, setShowResult] = useState(false);
 
-  // Референции (Refs) за анимациите
   const carouselRef = useRef(null);
-  const indicatorRef = useRef(null);
   const mainCardRef = useRef(null);
   const frontSideRef = useRef(null);
   const particleContainerRef = useRef(null);
 
-  const cardStep = 180; // 150px + 30px gap
+  const cardStep = 180;
 
   const startSequence = () => {
     setPhase('spinning');
@@ -49,7 +53,6 @@ function App() {
 
         setTimeout(() => {
           setPhase('selected');
-          // Glow ефект чрез референция
           const centerIndex = Math.abs(snappedX / cardStep);
           const cards = carouselRef.current.children;
           if (cards[centerIndex]) {
@@ -59,7 +62,8 @@ function App() {
 
           setTimeout(() => {
             setPhase('reveal');
-            createExplosion();
+            // Използваме функцията от utils
+            createExplosion(particleContainerRef); 
             startCardSpin();
           }, 1500);
         }, 1000);
@@ -89,9 +93,11 @@ function App() {
         requestAnimationFrame(spin);
       } else {
         const finalAngle = Math.round(angle / 360) * 360;
-        mainCardRef.current.style.transition = "transform 1.2s cubic-bezier(0.2, 0.5, 0.3, 1)";
-        mainCardRef.current.style.transform = `rotateY(${finalAngle}deg)`;
-        frontSideRef.current.style.filter = `brightness(1) blur(0px)`;
+        if (mainCardRef.current) {
+          mainCardRef.current.style.transition = "transform 1.2s cubic-bezier(0.2, 0.5, 0.3, 1)";
+          mainCardRef.current.style.transform = `rotateY(${finalAngle}deg)`;
+        }
+        if (frontSideRef.current) frontSideRef.current.style.filter = `brightness(1) blur(0px)`;
 
         setTimeout(() => {
           setResultText('Тази нощ си "СТРАЖ"');
@@ -102,59 +108,25 @@ function App() {
     spin();
   };
 
-  const createExplosion = () => {
-    for (let i = 0; i < 50; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      particleContainerRef.current.appendChild(p);
-
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 500 + Math.random() * 900;
-
-      p.animate([
-        { transform: 'translate(-50%, -50%) rotate(0deg) scale(1.2)', opacity: 1 },
-        { transform: `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) rotate(${Math.random() * 1000}deg) scale(0)`, opacity: 0 }
-      ], { duration: 1800, easing: 'ease-out' });
-
-      setTimeout(() => p.remove(), 1800);
-    }
-  };
-
   return (
     <div className="App">
-      <div id="particle-container" ref={particleContainerRef}></div>
+      {/* Контейнер за частици */}
+      <Explosion ref={particleContainerRef} />
 
-      {/* Индикаторът се показва само при въртене и избор */}
       {(phase === 'spinning' || phase === 'selected') && (
-        <div className={`indicator ${phase === 'selected' ? 'active' : ''}`} id="main-indicator">▼</div>
+        <Indicator phase={phase} />
       )}
 
-      {/* Карусел */}
       {(phase === 'spinning' || phase === 'selected') && (
-        <div id="carousel-wrapper">
-          <div className="carousel-viewport">
-            <div className="carousel" ref={carouselRef}>
-              {[...Array(150)].map((_, i) => (
-                <div key={i} className="carousel-card"></div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <Carousel ref={carouselRef} />
       )}
 
-      {/* Резултатна карта */}
       {phase === 'reveal' && (
-        <div id="main-card-viewport">
-          <div className={`result-text ${showResult ? 'visible' : ''}`}>{resultText}</div>
-          <div className="card" ref={mainCardRef}>
-            <div className="side front" ref={frontSideRef}>
-              <img src={cardFront} alt="Front" />
-            </div>
-            <div className="side back">
-              <img src={cardBack} alt="Back" />
-            </div>
-          </div>
-        </div>
+        <RevealCard 
+          ref={{ mainCardRef, frontSideRef }} 
+          showResult={showResult} 
+          resultText={resultText} 
+        />
       )}
 
       {phase === 'idle' && (
