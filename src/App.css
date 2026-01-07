@@ -1,23 +1,34 @@
 /* src/App.css */
 
 /* 1. Общи стилове за основата */
-body, html {
+/* App.css */
+
+body {
+    background-color: #050505; /* Резервен цвят */
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #050505;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+
+    /* ОСНОВЕН ФОН ЗА ЦЯЛОТО ПРИЛОЖЕНИЕ */
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), /* Затъмняване */
+        url('./assets/fon.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .App {
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: transparent; /* Уверяваме се, че е прозрачно */
 }
 
 .hidden {
@@ -55,7 +66,8 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+    /* Променяме плътното черно на прозрачен градиент */
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
     z-index: 100;
 }
 
@@ -115,16 +127,17 @@ body, html {
     backface-visibility: hidden;
     border-radius: 15px;
     overflow: hidden;
+    background: transparent; /* Уверяваме се, че няма фон */
 }
 
 .side img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background: #000;
+    /* ТОВА БЕШЕ ПРОБЛЕМЪТ - променяме от #000 на transparent */
+    background: transparent; 
     border-radius: 15px;
 }
-
 .back {
     transform: rotateY(180deg);
 }
