@@ -1,42 +1,203 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* src/App.css */
+
+/* 1. Общи стилове за основата */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.hidden {
+    display: none !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* 2. СТРЕЛКА (Индикатор) - Фиксирана и центрирана */
+.indicator {
+    position: fixed;
+    left: 50%;
+    /* Вдигната с 40px допълнително за разстояние от карусела */
+    top: calc(50% - 225px); 
+    transform: translateX(-50%) !important;
+    color: #ffcc00;
+    font-size: 60px;
+    z-index: 9999;
+    filter: drop-shadow(0 0 10px #ffcc00);
+    pointer-events: none;
+    line-height: 1;
+    transition: color 0.3s, opacity 0.3s;
+}
+
+.indicator.active {
+    color: #ff0000;
+    filter: drop-shadow(0 0 20px #ff0000);
+}
+
+/* 3. КАРУСЕЛ (Въртележка) */
+#carousel-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+    z-index: 100;
+}
+
+.carousel-viewport {
+    width: 100vw;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    /* Базово отместване за центриране на първата карта (150/2 + 15 = 90) */
+    transform: translateX(-90px);
+    will-change: transform;
+}
+
+.carousel-card {
+    width: 150px;
+    min-width: 150px;
+    height: 250px;
+    margin: 0 15px;
+    background-image: url('./assets/cards.png'); /* Гърбът на картата */
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+    transition: box-shadow 0.4s, border 0.4s;
+}
+
+/* 4. ГЛАВНА КАРТА (Разкриване) */
+#main-card-viewport {
+    width: 260px;
+    height: 430px;
+    perspective: 2000px;
+    position: relative;
+    z-index: 200;
 }
 
 .card {
-  padding: 2em;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
 }
 
-.read-the-docs {
-  color: #888;
+.side {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.side img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+    border-radius: 15px;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+/* 5. ТЕКСТ С РЕЗУЛТАТ */
+.result-text {
+    position: absolute;
+    top: -80px;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0;
+    transition: 1s ease-out;
+    white-space: nowrap;
+    /* Твоето изискване за леко изместване наляво */
+    left: -34px; 
+}
+
+.result-text.visible {
+    opacity: 1;
+    text-shadow: 0 0 15px #ffcc00, 0 0 30px #ff6600;
+    transform: translateY(-10px);
+}
+
+/* 6. ЕКСПЛОЗИЯ (ЧАСТИЦИ) */
+#particle-container {
+    position: fixed; /* Важно: фиксиран спрямо целия екран */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* За да не пречи на кликовете */
+    z-index: 10000; /* Трябва да е над всичко */
+}
+/* src/App.css */
+.particle {
+    position: absolute;
+    width: 60px;
+    height: 100px;
+    background-image: url('./assets/cards.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    /* ДОБАВИ ТОВА: Скриваме ги първоначално */
+    opacity: 0; 
+}
+
+/* 7. БУТОН */
+#play-button {
+    position: relative;
+    z-index: 300;
+    padding: 18px 70px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ffcc00, #ff6600);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#play-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 102, 0, 0.6);
+}
+
+#play-button:active {
+    transform: scale(0.95);
 }
