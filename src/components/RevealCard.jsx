@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import zadna from '../assets/zadna.png';
+import zadna from '/assets/zadna.png';
 
 const RevealCard = forwardRef(({ showResult, resultText, roleImage }, ref) => (
   <div id="main-card-viewport">

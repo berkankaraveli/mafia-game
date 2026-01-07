@@ -1,36 +1,37 @@
+// App.jsx
 import React, { useState, useRef } from 'react';
 import './App.css';
 
 // Компоненти
-import Home from './components/Home';
+import Home from './components/Home.jsx'; // Добавено .jsx разширение за яснота
 import Indicator from './components/Indicator';
 import Carousel from './components/Carousel';
 import RevealCard from './components/RevealCard';
 import Explosion from './components/Explosion';
 import { createExplosion } from './utils/effects';
 
-// Роли
-import chernostraj from './assets/chernostraj.png';
-import chumar from './assets/chumar.png';
-import gadatelka from './assets/gadatelka.png';
-import glavorez from './assets/glavorez.png';
-import kasapin from './assets/kasapin.png';
-import kovach from './assets/kovach.png';
-import lechitel from './assets/lechitel.png';
-import nadziratel from './assets/nadziratel.png';
-import naslednik from './assets/naslednik.png';
-import omainik from './assets/omainik.png';
-import otrovitel from './assets/otrovitel.png';
-import palach from './assets/palach.png';
-import pastir from './assets/pastir.png';
-import piroman from './assets/piroman.png';
-import prelomnik from './assets/prelomnik.png';
-import sledotursach from './assets/sledotursach.png';
-import stareishina from './assets/stareishina.png';
-import straj from './assets/straj.png';
-import strelec from './assets/strelec.png';
-import svatovnik from './assets/svatovnik.png';
-import tumnichar from './assets/tumnichar.png';
+// Роли - ИМПОРТИ (Без промяна)
+import chernostraj from '/assets/chernostraj.png';
+import chumar from '/assets/chumar.png';
+import gadatelka from '/assets/gadatelka.png';
+import glavorez from '/assets/glavorez.png';
+import kasapin from '/assets/kasapin.png';
+import kovach from '/assets/kovach.png';
+import lechitel from '/assets/lechitel.png';
+import nadziratel from '/assets/nadziratel.png';
+import naslednik from '/assets/naslednik.png';
+import omainik from '/assets/omainik.png';
+import otrovitel from '/assets/otrovitel.png';
+import palach from '/assets/palach.png';
+import pastir from '/assets/pastir.png';
+import piroman from '/assets/piroman.png';
+import prelomnik from '/assets/prelomnik.png';
+import sledotursach from '/assets/sledotursach.png';
+import stareishina from '/assets/stareishina.png';
+import straj from '/assets/straj.png';
+import strelec from '/assets/strelec.png';
+import svatovnik from '/assets/svatovnik.png';
+import tumnichar from '/assets/tumnichar.png';
 
 const ROLES = [
   { id: 'chernostraj', name: 'Черностраж', image: chernostraj },
@@ -60,9 +61,22 @@ function App() {
   const [phase, setPhase] = useState('home'); 
   const [selectedRole, setSelectedRole] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('mafia_user');
     return saved ? JSON.parse(saved) : { name: 'Играч 1', level: 1, xp: 0, totalSpins: 0 };
+  });
+
+  // --- АКТУАЛИЗИРАН АВАТАР СТЕЙТ ---
+  // Това са данните, които AvatarCreator.jsx очаква.
+  // ЗАМЕНИ ПЪТИЩАТА С ТВОИТЕ РЕАЛНИ PNG ФАЙЛОВЕ!
+  const [avatar, setAvatar] = useState({
+    body: '/assets/tqlo.png', // Основа на главата
+    eyes: '/assets/ochi.png',       // Очи
+    eyebrows: '/assets/vejdi.png', // Вежди
+    nose: '/assets/nos.png',   // Нос
+    mouth: '/assets/usta.png',        // Уста
+    hair: '/assets/kosa.png'      // Коса
   });
 
   const carouselRef = useRef(null);
@@ -83,17 +97,19 @@ function App() {
     });
   };
 
-  // ФУНКЦИЯТА, КОЯТО СТАРТИРА ВСИЧКО ДИРЕКТНО
-  const handleStartFromLobby = () => {
+  // --- ЛОГИКА ЗА ИГРАТА (Без промяна) ---
+  const handleStartGame = () => {
     const randomRole = ROLES[Math.floor(Math.random() * ROLES.length)];
     setSelectedRole(randomRole);
-    setPhase('spinning'); // Сменяме фазата
+    setPhase('spinning');
     setShowResult(false);
     
-    // Малко изчакване, за да се рендерира карусела преди анимацията
     setTimeout(() => {
+      if (carouselRef.current) {
+        carouselRef.current.querySelectorAll('.carousel-card').forEach(c => c.classList.remove('active-glow'));
+      }
       runCarouselAnimation();
-    }, 50);
+    }, 100);
   };
 
   const runCarouselAnimation = () => {
@@ -139,20 +155,18 @@ function App() {
   const startCardSpin = () => {
     let angle = 0;
     let rotationSpeed = 65;
-    let blurValue = 25;
-    let brightValue = 4;
+    let blurVal = 25;
+    let brightVal = 4;
 
     const spin = () => {
       angle += rotationSpeed;
       rotationSpeed *= 0.982;
-
-      // ДИНАМИЧНО НАМАЛЯВАНЕ НА БЛЪРА
-      if (blurValue > 0) blurValue -= 0.22;
-      if (brightValue > 1) brightValue -= 0.035;
+      if (blurVal > 0) blurVal -= 0.22;
+      if (brightVal > 1) brightVal -= 0.035;
 
       if (mainCardRef.current && frontSideRef.current) {
         mainCardRef.current.style.transform = `rotateY(${angle}deg)`;
-        frontSideRef.current.style.filter = `brightness(${brightValue}) blur(${Math.max(0, blurValue)}px)`;
+        frontSideRef.current.style.filter = `brightness(${brightVal}) blur(${Math.max(0, blurVal)}px)`;
       }
 
       if (rotationSpeed > 0.2) {
@@ -175,7 +189,7 @@ function App() {
       <Explosion ref={particleContainerRef} />
 
       {phase === 'home' && (
-        <Home user={user} onStartGame={handleStartFromLobby} />
+        <Home user={user} avatar={avatar} onStartGame={handleStartGame} />
       )}
 
       {(phase === 'spinning' || phase === 'selected') && (
@@ -194,7 +208,7 @@ function App() {
             roleImage={selectedRole?.image}
           />
           {showResult && (
-            <button className="back-home-btn" onClick={() => setPhase('home')}>
+            <button className="back-lobby-btn" onClick={() => setPhase('home')}>
               ОБРАТНО В ЛОБИТО
             </button>
           )}
