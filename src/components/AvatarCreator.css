@@ -1,0 +1,86 @@
+.creator-container {
+    display: flex;
+    background-color: #222;
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    gap: 30px;
+    align-items: center;
+}
+
+/* --- СЦЕНАТА НА КУКЛАТА --- */
+.avatar-stage {
+    width: 300px;
+    height: 450px;
+    background: radial-gradient(circle, #555, #333);
+    border-radius: 15px;
+    border: 3px solid #ffcc00;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+/* Този контейнер държи всички слоеве заедно */
+.avatar-layers-container {
+    position: relative; /* ВАЖНО: Родителят е relative */
+    width: 200px;
+    height: 300px;
+}
+
+/* --- МАГИЯТА НА НАСЛОЯВАНЕТО --- */
+.avatar-layer {
+    position: absolute; /* ВАЖНО: Децата са absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Гарантираме, че всички SVG-та съвпадат перфектно */
+    pointer-events: none; 
+}
+
+/* Подреждане по Z-индекс (за всеки случай) */
+.avatar-layer.base { z-index: 1; }
+.avatar-layer.pants { z-index: 2; }
+.avatar-layer.shirt { z-index: 3; }
+.avatar-layer.hair { z-index: 4; }
+
+
+/* --- КОНТРОЛИ --- */
+.controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 250px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+select {
+    padding: 10px;
+    border-radius: 5px;
+    background: #444;
+    color: white;
+    border: 1px solid #ffcc00;
+}
+
+.color-picker {
+    display: flex;
+    gap: 10px;
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.color-btn:hover { transform: scale(1.1); }
+.color-btn.active { border-color: #ffcc00; }

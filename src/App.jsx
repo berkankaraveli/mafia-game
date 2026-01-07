@@ -1,14 +1,15 @@
 import React, { useState, useRef } from 'react';
 import './App.css';
 
-// Импорт на компоненти
+// Компоненти
+import Home from './components/Home';
 import Indicator from './components/Indicator';
 import Carousel from './components/Carousel';
 import RevealCard from './components/RevealCard';
 import Explosion from './components/Explosion';
 import { createExplosion } from './utils/effects';
 
-// Импорт на всички роли
+// Роли
 import chernostraj from './assets/chernostraj.png';
 import chumar from './assets/chumar.png';
 import gadatelka from './assets/gadatelka.png';
@@ -56,32 +57,49 @@ const ROLES = [
 ];
 
 function App() {
-  const [phase, setPhase] = useState('idle');
+  const [phase, setPhase] = useState('home'); 
   const [selectedRole, setSelectedRole] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('mafia_user');
+    return saved ? JSON.parse(saved) : { name: 'Играч 1', level: 1, xp: 0, totalSpins: 0 };
+  });
 
   const carouselRef = useRef(null);
   const mainCardRef = useRef(null);
   const frontSideRef = useRef(null);
   const particleContainerRef = useRef(null);
 
-  const cardStep = 230; // 200px ширина + 15px ляв маржин + 15px десен маржин
+  const cardStep = 230;
 
-  const startSequence = () => {
+  const addXP = (amount) => {
+    setUser(prev => {
+      let newXP = prev.xp + amount;
+      let newLevel = prev.level;
+      if (newXP >= prev.level * 200) { newXP -= prev.level * 200; newLevel++; }
+      const updated = { ...prev, xp: newXP, level: newLevel, totalSpins: prev.totalSpins + 1 };
+      localStorage.setItem('mafia_user', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  // ФУНКЦИЯТА, КОЯТО СТАРТИРА ВСИЧКО ДИРЕКТНО
+  const handleStartFromLobby = () => {
     const randomRole = ROLES[Math.floor(Math.random() * ROLES.length)];
     setSelectedRole(randomRole);
-    setPhase('spinning');
+    setPhase('spinning'); // Сменяме фазата
     setShowResult(false);
     
-    // Премахваме старото светене, ако има такова
-    if (carouselRef.current) {
-      const allCards = carouselRef.current.querySelectorAll('.carousel-card');
-      allCards.forEach(c => c.classList.remove('active-glow'));
-    }
+    // Малко изчакване, за да се рендерира карусела преди анимацията
+    setTimeout(() => {
+      runCarouselAnimation();
+    }, 50);
+  };
 
+  const runCarouselAnimation = () => {
     let currentX = 0;
     const duration = 8000;
-    const initialSpeed = 20; 
+    const initialSpeed = 22; 
     const startTime = Date.now();
 
     const animate = () => {
@@ -92,29 +110,19 @@ function App() {
         const easeOut = 1 - Math.pow(progress, 2);
         const speed = easeOut * initialSpeed + 1.5;
         currentX -= speed;
-        if (carouselRef.current) {
-          carouselRef.current.style.transform = `translateX(${currentX - 115}px)`;
-        }
+        if (carouselRef.current) carouselRef.current.style.transform = `translateX(${currentX - 115}px)`;
         requestAnimationFrame(animate);
       } else {
-        // Изчисляваме крайната позиция (snapping)
         const snappedX = Math.round(currentX / cardStep) * cardStep;
-        
         if (carouselRef.current) {
           carouselRef.current.style.transition = "transform 1.5s cubic-bezier(0.1, 1, 0.1, 1)";
           carouselRef.current.style.transform = `translateX(${snappedX - 115}px)`;
-
-          // ЛОГИКА ЗА СВЕТВАНЕТО
           setTimeout(() => {
             const cards = carouselRef.current.querySelectorAll('.carousel-card');
-            // Намираме коя карта е точно под индикатора
-            const centerIndex = Math.abs(snappedX / cardStep);
-            if (cards[centerIndex]) {
-              cards[centerIndex].classList.add('active-glow');
-            }
-          }, 1000); // Изчакваме спирането на прехода
+            const centerIndex = Math.abs(snappedX / cardStep) % cards.length;
+            if (cards[centerIndex]) cards[centerIndex].classList.add('active-glow');
+          }, 1000);
         }
-
         setTimeout(() => {
           setPhase('selected');
           setTimeout(() => {
@@ -122,7 +130,7 @@ function App() {
             createExplosion(particleContainerRef);
             startCardSpin();
           }, 1000);
-        }, 2000); // Малко повече време, за да се види светлинния ефект
+        }, 2000);
       }
     };
     animate();
@@ -130,19 +138,21 @@ function App() {
 
   const startCardSpin = () => {
     let angle = 0;
-    let rotationSpeed = 60;
-    let blur = 25;
-    let bright = 4;
+    let rotationSpeed = 65;
+    let blurValue = 25;
+    let brightValue = 4;
 
     const spin = () => {
       angle += rotationSpeed;
       rotationSpeed *= 0.982;
-      if (blur > 0) blur -= 0.18;
-      if (bright > 1) bright -= 0.03;
+
+      // ДИНАМИЧНО НАМАЛЯВАНЕ НА БЛЪРА
+      if (blurValue > 0) blurValue -= 0.22;
+      if (brightValue > 1) brightValue -= 0.035;
 
       if (mainCardRef.current && frontSideRef.current) {
         mainCardRef.current.style.transform = `rotateY(${angle}deg)`;
-        frontSideRef.current.style.filter = `brightness(${bright}) blur(${Math.max(0, blur)}px)`;
+        frontSideRef.current.style.filter = `brightness(${brightValue}) blur(${Math.max(0, blurValue)}px)`;
       }
 
       if (rotationSpeed > 0.2) {
@@ -154,7 +164,7 @@ function App() {
           mainCardRef.current.style.transform = `rotateY(${finalAngle}deg)`;
         }
         if (frontSideRef.current) frontSideRef.current.style.filter = `brightness(1) blur(0px)`;
-        setTimeout(() => setShowResult(true), 1000);
+        setTimeout(() => { setShowResult(true); addXP(50); }, 1000);
       }
     };
     spin();
@@ -163,17 +173,33 @@ function App() {
   return (
     <div className="App">
       <Explosion ref={particleContainerRef} />
-      {(phase === 'spinning' || phase === 'selected') && <Indicator phase={phase} />}
-      {(phase === 'spinning' || phase === 'selected') && <Carousel ref={carouselRef} />}
-      {phase === 'reveal' && (
-        <RevealCard 
-          ref={{ mainCardRef, frontSideRef }} 
-          showResult={showResult} 
-          resultText={`Тази нощ си "${selectedRole?.name}"`} 
-          roleImage={selectedRole?.image}
-        />
+
+      {phase === 'home' && (
+        <Home user={user} onStartGame={handleStartFromLobby} />
       )}
-      {phase === 'idle' && <button id="play-button" onClick={startSequence}>ИГРАЙ</button>}
+
+      {(phase === 'spinning' || phase === 'selected') && (
+        <>
+          <Indicator phase={phase} />
+          <Carousel ref={carouselRef} />
+        </>
+      )}
+
+      {phase === 'reveal' && (
+        <div className="reveal-overlay">
+          <RevealCard 
+            ref={{ mainCardRef, frontSideRef }} 
+            showResult={showResult} 
+            resultText={`Тази нощ си "${selectedRole?.name}"`} 
+            roleImage={selectedRole?.image}
+          />
+          {showResult && (
+            <button className="back-home-btn" onClick={() => setPhase('home')}>
+              ОБРАТНО В ЛОБИТО
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
