@@ -22,7 +22,7 @@
 
 /* Разпределение на ширината на колоните */
 .left-panel { flex: 1; }
-.center-panel { flex: 2; }
+.center-panel { flex: 2; margin-top: 15%;}
 .right-panel { flex: 1; }
 
 /* --- ЛЯВА КОЛОНА: Бутон --- */

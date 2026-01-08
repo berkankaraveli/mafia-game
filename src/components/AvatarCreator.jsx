@@ -9,7 +9,6 @@ const AvatarCreator = ({ selections }) => {
   }
 
   // Помощна функция: Рендира слой само ако има път (src) към картинката.
-  // Това предотвратява появата на "счупени" иконки за липсващи изображения.
   const renderLayer = (src, layerClass) => {
     if (!src) return null;
     return <img src={src} className={`alayer ${layerClass}`} alt="" />;
@@ -25,6 +24,10 @@ const AvatarCreator = ({ selections }) => {
 
         {/* 1. Най-отзад: Основа на главата/Тяло */}
         {renderLayer(selections.body, 'layer-body')}
+
+        {/* --- НОВО: Долна част на лицето --- */}
+        {/* Ще очакваме ново пропърти 'lowerFace' в обекта selections */}
+        {renderLayer(selections.lowerFace, 'layer-lower-face')}
 
         {/* 2. Среда: Лицеви черти */}
         {renderLayer(selections.eyes, 'layer-eyes')}

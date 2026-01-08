@@ -72,6 +72,7 @@ function App() {
   // ЗАМЕНИ ПЪТИЩАТА С ТВОИТЕ РЕАЛНИ PNG ФАЙЛОВЕ!
   const [avatar, setAvatar] = useState({
     body: '/assets/tqlo.png', // Основа на главата
+    lowerFace: '/assets/dolnachast.png',
     eyes: '/assets/ochi.png',       // Очи
     eyebrows: '/assets/vejdi.png', // Вежди
     nose: '/assets/nos.png',   // Нос
