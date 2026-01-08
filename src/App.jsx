@@ -1,30 +1,33 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+// ВАЖНИ ИМПОРТИ ЗА РУТИРАНЕТО
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-// Данни
-import { ROLES } from './data/roles';
-
-// Утилити за анимации
-import { runCarouselAnimation, triggerRevealSequence } from './utils/gameAnimations';
-
-// Компоненти
-import Home from './components/Home.jsx';
-import Indicator from './components/Indicator';
-import Carousel from './components/Carousel';
+// Глобални Компоненти
 import Explosion from './components/Explosion';
-import RevealPhase from './components/RevealPhase'; // Новият компонент
+
+// Страници
+import Home from './components/Home.jsx';
+import GamePage from './pages/GamePage';
+import ShopPage from './pages/ShopPage';
+import InventoryPage from './pages/InventoryPage';
+import RolesPage from './pages/RolesPage';
+import GuildPage from './pages/GuildPage';
 
 function App() {
-  // --- STATE ---
-  const [phase, setPhase] = useState('home'); 
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [showResult, setShowResult] = useState(false);
-  
+  // --- ГЛОБАЛЕН STATE ---
+  const [isLoading, setIsLoading] = useState(true);
+  // Държим реф-а за експлозията тук, защото тя е глобална
+  const particleContainerRef = useRef(null);
+
+  // User State
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('mafia_user');
-    return saved ? JSON.parse(saved) : { name: 'Играч 1', level: 1, xp: 0, totalSpins: 0 };
+    // ПРОМЯНА ТУК: Добавяме diamonds
+    return saved ? JSON.parse(saved) : { name: 'Играч 1', level: 1, xp: 0, totalSpins: 0, gold: 500, diamonds: 50 };
   });
 
+  // Avatar State
   const [avatar, setAvatar] = useState({
     body: '/assets/tqlo.png',
     lowerFace: '/assets/dolnachast.png',
@@ -35,13 +38,15 @@ function App() {
     hair: '/assets/kosa.png'
   });
 
-  // --- REFS ---
-  const carouselRef = useRef(null);
-  const mainCardRef = useRef(null);
-  const frontSideRef = useRef(null);
-  const particleContainerRef = useRef(null);
+  // --- ЛОГИКА ЗА ЗАРЕЖДАНЕ (Loader) ---
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/assets/fon.png';
+    img.onload = () => setIsLoading(false);
+    img.onerror = () => setIsLoading(false);
+  }, []);
 
-  // --- USER LOGIC ---
+  // --- ГЛОБАЛНИ ФУНКЦИИ ---
   const addXP = (amount) => {
     setUser(prev => {
       let newXP = prev.xp + amount;
@@ -53,79 +58,35 @@ function App() {
     });
   };
 
-  // --- GAME FLOW LOGIC ---
-
-  // 1. Начало на играта
-  const handleStartGame = () => {
-    const randomRole = ROLES[Math.floor(Math.random() * ROLES.length)];
-    setSelectedRole(randomRole);
-    setPhase('spinning');
-    setShowResult(false);
-    
-    // Зачистване на предишно светене
-    if (carouselRef.current) {
-        carouselRef.current.querySelectorAll('.carousel-card').forEach(c => c.classList.remove('active-glow'));
-    }
-
-    // Стартиране на анимацията на карусела (от външния файл)
-    // Подаваме ref-а и функция, която да се изпълни при приключване
-    setTimeout(() => {
-        runCarouselAnimation(carouselRef, handleCarouselComplete);
-    }, 100);
-  };
-
-  // 2. Каруселът е спрял, преминаваме към фаза "selected" и после "reveal"
-  const handleCarouselComplete = useCallback(() => {
-      setPhase('selected');
-      // Малка пауза преди експлозията
-      setTimeout(() => {
-        setPhase('reveal');
-        // Стартиране на експлозия и въртене на карта (от външния файл)
-        triggerRevealSequence(
-            particleContainerRef, 
-            mainCardRef, 
-            frontSideRef, 
-            handleRevealComplete // Callback при край на въртенето
-        );
-      }, 1000);
-  }, []);
-
-  // 3. Картата се е завъртяла, показваме резултата и даваме XP
-  const handleRevealComplete = useCallback(() => {
-      setShowResult(true);
-      addXP(50);
-  }, []);
-
-  const handleBackToLobby = () => {
-      setPhase('home');
-  };
 
 
-  // --- RENDER ---
+  // 2. Ако е заредило, покажи приложението с Рутера
   return (
-    <div className="App">
-      <Explosion ref={particleContainerRef} />
+    // Router обвива всичко
+    <Router>
+      <div className="App">
+        {/* Експлозията е извън Routes, за да е винаги заредена в DOM-а */}
+        <Explosion ref={particleContainerRef} />
 
-      {phase === 'home' && (
-        <Home user={user} avatar={avatar} onStartGame={handleStartGame} />
-      )}
+        {/* Тук дефинираме кой адрес коя страница отваря */}
+        <Routes>
+          {/* Главна страница (Лоби) - подаваме user и avatar */}
+          <Route path="/" element={<Home user={user} avatar={avatar} />} />
 
-      {(phase === 'spinning' || phase === 'selected') && (
-        <>
-          <Indicator phase={phase} />
-          <Carousel ref={carouselRef} />
-        </>
-      )}
+          {/* Страница за Игра - подаваме функцията за XP и реф-а за експлозията */}
+          <Route
+            path="/game"
+            element={<GamePage addXP={addXP} particleCtrlRef={particleContainerRef} />}
+          />
 
-      {phase === 'reveal' && (
-        <RevealPhase 
-            ref={{ mainCardRef, frontSideRef }}
-            showResult={showResult}
-            selectedRole={selectedRole}
-            onBackToLobby={handleBackToLobby}
-        />
-      )}
-    </div>
+          {/* Останалите страници */}
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/inventory" element={<InventoryPage />} />
+          <Route path="/roles" element={<RolesPage />} />
+          <Route path="/guild" element={<GuildPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
