@@ -20,62 +20,44 @@
 }
 
 .left-panel { flex: 1; }
+/* Центърът е малко по-нагоре, за да не се закриват краката на аватара */
 .center-panel { flex: 2; margin-top: 15%; }
 .right-panel { flex: 1; }
 
 
-/* --- ЕДИНЕН СТИЛ ЗА ВСИЧКИ БУТОНИ (ИГРАЙ + МЕНЮ) --- */
-/* ТОВА ГАРАНТИРА, ЧЕ ВСИЧКИ БУТОНИ ИЗГЛЕЖДАТ ЕДНАКВО */
-.big-play-btn, .stone-menu-btn {
-    /* ТИПОГРАФИЯ */
+/* --- ЛЯВА КОЛОНА: БУТОНИ --- */
+
+.big-play-btn {
     font-weight: bold;
     color: #cecece;
     font-size: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-    opacity: 0.98;
-
-    /* РАЗМЕРИ И ОТСТОЯНИЯ */
     padding: 18px 25px;
     width: 100%;
-    max-width: 250px;
-
-    /* ВИЗУАЛЕН СТИЛ НА БУТОНА */
+    max-width: 280px;
     cursor: pointer;
-
-    /* ВАЖНО: МАХАМЕ ВСЯКАКВИ БОРДЮРИ, СЕНКИ И ОЧЕРТАНИЯ */
-    border: none !important; /* Добавих !important за сигурност */
+    border: none !important;
     box-shadow: none !important;
-    outline: none !important; /* Маха рамката при клик/фокус */
-
-    /* ФОНОВА КАРТИНКА */
+    outline: none !important;
     background-image: url('/assets/background-btn.png');
-    background-size: 105% 105%; /* Леко разпъване за скриване на ръбове */
+    background-size: 105% 105%;
     background-position: center;
     background-repeat: no-repeat;
-
-    /* --- ТУК БЯХА ЛИПСВАЩИТЕ РЕДОВЕ --- */
-    /* Заобляме ъглите на самия елемент бутон */
     border-radius: 15px;
-    /* Скриваме стандартния бял фон на бутона, който излиза в ъглите */
     overflow: hidden;
-    /* ---------------------------------- */
-
-    /* АНИМАЦИЯ */
     transition: all 0.2s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 100px;
 }
 
-/* --- СПЕЦИФИЧНИ РАЗПОЛОЖЕНИЯ --- */
-
-/* Бутон ИГРАЙ - само отстояние отдолу */
-.big-play-btn {
-    margin-bottom: 10px;
-    margin-left: 20px;
+/* Специфично за ИГРАЙ бутона */
+.left-panel > .big-play-btn:first-child {
+    margin-bottom: 15px;
 }
 
-/* Контейнер за менюто */
+/* Контейнер меню */
 .menu-buttons-container {
     display: flex;
     flex-direction: column;
@@ -84,42 +66,83 @@
     align-items: center;
 }
 
-
-/* --- ЕФЕКТИ ПРИ ВЗАИМОДЕЙСТВИЕ (БЕЗ НИКАКВА СЯНКА) --- */
-
-.big-play-btn:hover, .stone-menu-btn:hover {
-    transform: translateY(-3px); /* Само повдигане */
-    filter: brightness(1.15);    /* Само изсветляване */
-    /* box-shadow е премахнат напълно от тук */
+/* Ефекти на бутоните */
+.big-play-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.15);
 }
-
-.big-play-btn:active, .stone-menu-btn:active {
-    transform: translateY(1px);  /* Само натискане */
-    filter: brightness(0.9);     /* Само потъмняване */
-    box-shadow: none;
+.big-play-btn:active {
+    transform: translateY(1px);
+    filter: brightness(0.9);
 }
 
 
-/* --- ДЯСНА КОЛОНА (НЕПРОМЕНЕНА) --- */
-.profile-card, .missions-list {
-    background-color: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 10px;
+/* --- ДЯСНА КОЛОНА: СВИТЪК С МИСИИ --- */
+
+/* Старите стилове за .profile-card и .missions-list са премахнати.
+   Тук са новите само за свитъка. */
+
+.missions-list {
+    /* Задаваме размери на контейнера за свитъка */
     width: 100%;
-    max-width: 250px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
+    max-width: 400px; /* Може да се наложи да си поиграеш с това */
+    min-height: 550px; /* Височина, за да се разпъне хубаво картинката */
+    
+    /* ФОН - СВИТЪК */
+    background-image: url('/assets/svituk.png');
+    /* Разпъваме картинката точно по размерите на дива */
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* ВАЖНО: Голям Padding! Това избутва текста навътре,
+       за да не се пише върху навитите краища на свитъка.
+       Стойностите са: Горе, Дясно, Долу, Ляво.
+       Може да се наложи да ги нагласиш според твоята картинка. */
+    padding: 80px 80px 80px 80px;
+    margin-right: 100px;
+
+    /* СТИЛ НА ТЕКСТА (Мастило) */
+    color: #3e2723; /* Тъмно кафяв цвят, като старо мастило */
+    font-family: 'Comic Sans MS', 'Garamond', serif; /* Примерен по-ръкописен шрифт */
+    font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4); /* Лека светла сянка за четливост */
+
+    /* Центриране на съдържанието вътре */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    /* Махаме старите фонове и ефекти */
+    background-color: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-bottom: 0;
 }
 
-.profile-card h3 { margin-top: 0; text-align: center; }
-.lvl-info { text-align: center; font-weight: bold; margin-bottom: 10px; color: #f1c40f; }
-
-.xp-bar-outer {
-    width: 100%; height: 15px; background-color: #555;
-    border-radius: 8px; overflow: hidden; border: 2px solid #333;
+/* Заглавието */
+.missions-list h4 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    margin-left: 15px;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    width: 100%;
+    text-align: center;
 }
-.xp-bar-inner { height: 100%; background-color: #2ecc71; transition: width 0.5s ease-in-out; }
-.xp-text { text-align: center; font-size: 0.8rem; margin-top: 5px; color: #aaa; }
 
-.missions-list h4 { margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
-.mission-item { background-color: rgba(255,255,255,0.1); padding: 10px; margin-bottom: 8px; border-radius: 5px; font-size: 0.9rem; }
+/* Отделните редове с мисии */
+.mission-item {
+    /* Махаме стария тъмен фон */
+    background-color: transparent;
+    padding: 8px 0;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center; /* Текстът подравнен вляво */
+    /* Лека пунктирана линия между задачите */
+    border-bottom: 1px dashed rgba(62, 39, 35, 0.3); 
+    border-radius: 0;
+}

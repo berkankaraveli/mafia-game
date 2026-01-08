@@ -1,53 +1,46 @@
 // src/components/Home.jsx
-
 import React from 'react';
-// Увери се, че AvatarCreator е импортиран правилно според твоята структура
-// Ако дава грешка, провери дали файлът е .jsx или .js и къде се намира
+// Увери се, че пътят е верен спрямо твоята структура
 import AvatarCreator from './AvatarCreator'; 
 import './Home.css';
 
 const Home = ({ user, avatar, onStartGame }) => {
-  const xpPercentage = user.level > 0 ? (user.xp / (user.level * 200)) * 100 : 0;
+  // (XP изчисленията вече не ни трябват тук, но ги оставяме, ако потрябват другаде)
+  // const xpPercentage = user.level > 0 ? (user.xp / (user.level * 200)) * 100 : 0;
 
   return (
     <div className="home-screen">
-      {/* --- ЛЯВ ПАНЕЛ --- */}
+      {/* --- ЛЯВ ПАНЕЛ (БУТОНИ) --- */}
       <div className="home-panel left-panel">
-        {/* Главен бутон ИГРАЙ */}
         <button className="big-play-btn" onClick={onStartGame}>
           ИГРАЙ
         </button>
 
+        <div className="menu-buttons-container">
           <button className="big-play-btn">МАГАЗИН</button>
           <button className="big-play-btn">ИНВЕНТАР</button>
           <button className="big-play-btn">РОЛИ</button>
           <button className="big-play-btn">ГИЛДИЯ</button>
-
+        </div>
       </div>
 
-      {/* --- ЦЕНТРАЛЕН ПАНЕЛ (Аватар) --- */}
+      {/* --- ЦЕНТРАЛЕН ПАНЕЛ (АВАТАР) --- */}
       <div className="home-panel center-panel">
-         {/* Увери се, че този компонент съществува и работи */}
         <AvatarCreator selections={avatar} />
       </div>
 
-      {/* --- ДЕСЕН ПАНЕЛ (Профил) --- */}
+      {/* --- ДЕСЕН ПАНЕЛ (САМО МИСИИ ВЪРХУ СВИТЪК) --- */}
       <div className="home-panel right-panel">
-        <div className="profile-card">
-          <h3>{user.name}</h3>
-          <div className="lvl-info">LEVEL {user.level}</div>
-          <div className="xp-bar-outer">
-            <div 
-                className="xp-bar-inner" 
-                style={{width: `${xpPercentage}%`}}
-            ></div>
-          </div>
-          <p className="xp-text">{user.xp} / {user.level * 200} XP</p>
-        </div>
+        {/* ИЗТРИХМЕ .profile-card ОТ ТУК */}
+
         <div className="missions-list">
-          <h4>МИСИИ</h4>
-          <div className="mission-item">Изиграй 1 игра (+50 XP)</div>
-          <div className="mission-item">Промени аватара (+20 XP)</div>
+          <h4>МИСИИ ЗА ДЕНЯ</h4>
+          {/* Добавих още малко примерни, за да запълним свитъка */}
+          <div className="mission-item">1. Изиграй 1 игра</div>
+          <div className="mission-item">2. Промени аватара си</div>
+          <div className="mission-item">3. Посети оръжейния магазин</div>
+          <div className="mission-item">4. Разгледай новите роли</div>
+          <div className="mission-item">5. Влез в гилдия</div>
         </div>
       </div>
     </div>
