@@ -9,6 +9,11 @@
     background-repeat: no-repeat;
     color: white;
     font-family: sans-serif;
+    
+    /* НОВА ДОБАВКА: Отстояние отгоре заради TopBar */
+    /* Слагаме малко повече от височината на бара (70px), за да има въздух */
+    padding-top: 80px; 
+    box-sizing: border-box; /* Важно, за да не се счупи височината */
 }
 
 .home-panel {
