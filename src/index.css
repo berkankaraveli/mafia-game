@@ -1,17 +1,35 @@
+/* index.css - ИЗЧИСТЕНА ВЕРСИЯ */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Тези цветови схеми може да пречат на твоя тъмен дизайн.
+     По-добре да ги махнем или да ги фиксираме. Засега ги махаме. */
+  /* color-scheme: light dark; */
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Задаваме глобален тъмен фон за цялото приложение, за да няма бели ленти */
+body {
+  margin: 0;
+  background-color: #1a1a2a; /* Твоят тъмен цвят за фон */
+  /* МАХНАХМЕ: display: flex; */
+  /* МАХНАХМЕ: place-items: center; */
+  /* МАХНАХМЕ: min-width: 320px; */
+  /* МАХНАХМЕ: min-height: 100vh; */
+}
+
+/* Останалите стилове за бутони и линкове могат да останат, 
+   ако ги ползваш някъде, но за твоята игра те не са много нужни.
+   Можеш да ги изтриеш надолу, ако искаш по-чист файл. */
 
 a {
   font-weight: 500;
@@ -20,14 +38,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -54,15 +64,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+/* МАХАМЕ И МЕДИЯ ЗАЯВКАТА ЗА СВЕТЛА ТЕМА,
+   защото твоята игра е с фиксиран тъмен дизайн */
+/* @media (prefers-color-scheme: light) { ... } */

@@ -1,24 +1,35 @@
 /* src/components/RolesPage.css */
 
-/* Основен контейнер за страницата */
+/* --- ОСНОВНИ СТИЛОВЕ (Ядрената опция за цял екран остава) --- */
 .roles-page-screen {
-    min-height: 100vh;
-    background-image: url('/assets/fon.png'); /* Пътят до фона */
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    margin: 0 !important; z-index: 9999 !important;
+    
+    overflow-y: auto;
+    background-image: url('/assets/fon.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     color: #e0e0e0;
     font-family: 'Cinzel', serif;
-    padding-top: 80px;
+    padding-top: 80px !important;
+    /* КЛЮЧОВО: border-box навсякъде, за да не се бъркат размерите */
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
 }
 
-/* Контейнер за съдържанието */
+/* Уверяваме се, че всички елементи на страницата ползват този модел */
+.roles-page-screen * {
+    box-sizing: border-box;
+}
+
 .roles-content-container {
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1400px;
     padding: 20px;
     padding-bottom: 100px;
     display: flex;
@@ -26,7 +37,6 @@
     align-items: center;
 }
 
-/* Заглавие */
 .page-title {
     color: #FFD700;
     text-shadow: 2px 2px 4px #000000;
@@ -40,63 +50,135 @@
 /* --- РЕШЕТКА (GRID) --- */
 .roles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
+    /* ПРОМЯНА: Използваме фиксирана ширина за колоните, за да са еднакви.
+       repeat(auto-fit, 250px) означава "събери колкото можеш колони
+       по точно 250px всяка". */
+    grid-template-columns: repeat(auto-fit, 250px);
+    gap: 30px;
     width: 100%;
+    /* Центрираме цялата решетка в контейнера */
+    justify-content: center;
 }
 
-/* --- КАРТА НА РОЛЯ --- */
-.role-card {
-    background-color: rgba(20, 20, 30, 0.85);
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    border-radius: 12px;
+/* =========================================
+   3D FLIP CARD - ЕДНАКВИ РАЗМЕРИ
+   ========================================= */
+
+/* 1. ГЛАВЕН КОНТЕЙНЕР (Определя ФИКСИРАНИТЕ размери) */
+.role-card-container {
+    /* Ширината идва от грида (250px) */
+    /* ПРОМЯНА: Фиксирана височина за абсолютно всички карти */
+    height: 380px; 
+    perspective: 1500px; 
+    cursor: pointer;
+    /* Без рамки, без фонове тук */
+    background: transparent;
+}
+
+/* 2. ВЪТРЕШЕН КОНТЕЙНЕР (Въртенето) */
+.role-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+    /* Важно: Заоблянето се задава тук и се пренася на децата */
+    border-radius: 20px;
+}
+
+/* ХОВЪР ЕФЕКТ: Само завъртане */
+.role-card-container:hover .role-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 3. ПРЕДНА И ЗАДНА ЧАСТ (Общи стилове за еднаквост) */
+.role-card-front, .role-card-back {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    /* КЛЮЧОВО ЗА ЕДНАКВОСТТА: И двете страни трябва да имат
+       абсолютно еднакво заобляне и никакви външни рамки,
+       които да променят размера им. */
+    border-radius: 20px;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden; 
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none; /* Гарантираме, че няма рамки по ръбовете */
+}
+
+/* --- ПРЕДНА ЧАСТ (Само чиста снимка) --- */
+.role-card-front {
+    background-color: transparent; /* Прозрачен фон, ако снимката не запълни */
+}
+
+.role-image-full {
+    width: 100%;
+    height: 100%;
+    /* КЛЮЧОВО: 'cover' кара снимката да запълни целия фиксиран размер,
+       като се изреже автоматично, за да пасне, без да се смачква. */
+    object-fit: cover;
+    object-position: top center;
+}
+
+/* --- ЗАДНА ЧАСТ (zadna.png + текст) --- */
+.role-card-back {
+    background-size: cover;
+    background-position: center;
+    transform: rotateY(180deg);
+    /* Лека вътрешна сянка за дълбочина, не променя размера */
+
+}
+
+/* Текстовият слой ВЪТРЕ в задната част */
+.role-text-overlay-back-delayed {
+    background: rgba(0, 0, 0, 0.6);
     padding: 20px;
+    /* Уверяваме се, че вътрешният слой не излиза извън картата */
+    width: 90%;
+    height: 90%;
+    border-radius: 15px;
+    /* Тази рамка е ВЪТРЕ и не променя външния размер заради box-sizing */
+    border: 1px solid rgba(255, 215, 0, 0.3);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-}
-
-.role-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 215, 0, 0.8);
-    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.2);
-}
-
-/* Контейнер за снимката */
-.role-image-wrapper {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 15px;
-    display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease-in;
+    transition-delay: 0.3s;
 }
 
-/* Снимка */
-.role-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8));
+.role-card-container:hover .role-text-overlay-back-delayed {
+    opacity: 1;
+    transition-delay: 0s;
 }
 
-/* Име */
+/* Стилове за шрифтовете */
 .role-name {
-    margin: 10px 0;
+    margin: 0 0 15px 0;
     color: #FFD700;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     text-transform: uppercase;
+    text-shadow: 2px 2px 4px black;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.4);
+    padding-bottom: 10px;
 }
 
-/* Описание */
 .role-description {
     font-size: 0.95rem;
     line-height: 1.4;
-    color: #cccccc;
-    font-family: sans-serif;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+    text-shadow: 1px 1px 2px black;
+    margin: 0;
+    /* Ограничаваме текста, за да не разпъва картата */
+    max-height: 60%;
+    overflow-y: auto;
 }
 
 /* --- БУТОН НАЗАД --- */
