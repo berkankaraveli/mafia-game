@@ -4,7 +4,6 @@ import { Link, NavLink } from 'react-router-dom';
 import './TopBar.css';
 
 // --- ИМПОРТВАНЕ НА СНИМКИТЕ ЗА БУТОНИТЕ ---
-// Увери се, че снимките са в папката src/assets/
 import swordImg from '/assets/orujiq.png';
 import chestImg from '/assets/sanduk.png';
 import armorImg from '/assets/bronq.png';
@@ -17,10 +16,21 @@ const TopBar = ({ user }) => {
 
   return (
     <div className="top-bar">
-      {/* --- ЛЯВА СЕКЦИЯ: НАВИГАЦИОННИ БУТОНИ --- */}
-      <div className="top-bar-section left nav-buttons">
+      {/* --- ЛЯВА СЕКЦИЯ (БИВША ЦЕНТРАЛНА): ЛЕВЪЛ И XP --- */}
+      <div className="top-bar-section left level-xp-section">
+        <div className="level-indicator">НИВО {user.level}</div>
+        <div className="top-xp-bar-outer">
+            <div 
+                className="top-xp-bar-inner" 
+                style={{width: `${xpPercentage}%`}}
+            ></div>
+             <span className="top-xp-text">{user.xp} / {user.level * 200} XP</span>
+        </div>
+      </div>
+
+      {/* --- ЦЕНТРАЛНА СЕКЦИЯ (БИВША ЛЯВА): НАВИГАЦИОННИ БУТОНИ --- */}
+      <div className="top-bar-section center nav-buttons">
         <NavLink to="/game" className="nav-btn">
-            {/* Заместваме емотиконата със снимка */}
             <img src={swordImg} alt="Играй" className="nav-icon-img" />
             <span className="nav-text">ИГРАЙ</span>
         </NavLink>
@@ -40,18 +50,6 @@ const TopBar = ({ user }) => {
             <img src={sealImg} alt="Гилдия" className="nav-icon-img" />
             <span className="nav-text">ГИЛДИЯ</span>
         </NavLink>
-      </div>
-
-      {/* --- ЦЕНТРАЛНА СЕКЦИЯ: ЛЕВЪЛ И XP (Без промяна) --- */}
-      <div className="top-bar-section center">
-        <div className="level-indicator">LEVEL {user.level}</div>
-        <div className="top-xp-bar-outer">
-            <div 
-                className="top-xp-bar-inner" 
-                style={{width: `${xpPercentage}%`}}
-            ></div>
-             <span className="top-xp-text">{user.xp} / {user.level * 200} XP</span>
-        </div>
       </div>
 
       {/* --- ДЯСНА СЕКЦИЯ: ВАЛУТИ + ИКОНКИ (Без промяна) --- */}

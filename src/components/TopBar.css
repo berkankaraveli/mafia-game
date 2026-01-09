@@ -5,14 +5,15 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 75px; /* Леко увеличих височината, за да дишат иконките */
+    height: 75px;
     background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
     border-bottom: 2px solid rgba(255, 215, 0, 0.25);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    /* Намалих малко padding-а в краищата */
+    padding: 0 15px;
     box-sizing: border-box;
     z-index: 1000;
     color: white;
@@ -26,60 +27,65 @@
     flex: 1;
 }
 
-/* --- ЛЯВА СЕКЦИЯ (НАВИГАЦИОННИ БУТОНИ) --- */
+/* --- ЛЯВА СЕКЦИЯ (СЕГА ТУК СА НИВО И XP) --- */
 .top-bar-section.left {
     justify-content: flex-start;
-    gap: 15px; /* Малко повече разстояние между бутоните */
-    /* ТУК ГИ МЕСТИМ НАДЯСНО: */
-    padding-left: 40px; /* Беше 10px, сега е 40px, за да не са залепени */
+    /* ВАЖНО: Добавяме column тук, за да са едно под друго Нивото и Барът */
+    flex-direction: column;
+    align-items: flex-start; /* Подравняваме ги вляво */
+    gap: 2px;
 }
 
+/* --- ЦЕНТРАЛНА СЕКЦИЯ (СЕГА ТУК СА БУТОНИТЕ) --- */
+.top-bar-section.center {
+    justify-content: center;
+    /* ВАЖНО: МАХНАХМЕ 'flex-direction: column' от тук.
+       Сега бутоните ще се подредят хоризонтално по подразбиране. */
+    gap: 15px; /* Разстояние между бутоните */
+}
+
+/* Стилове за самите бутони */
 .nav-btn {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Икона над текст (това си е правилно ЗА САМИЯ БУТОН) */
     align-items: center;
     text-decoration: none;
-    color: #c0c0c0; /* Малко по-светъл сив за неактивни */
+    color: #c0c0c0;
     padding: 6px 14px;
     border-radius: 10px;
     transition: all 0.3s ease;
     position: relative;
-    border-bottom: 2px solid transparent; /* Резервираме място за бордера */
+    border-bottom: 2px solid transparent;
 }
 
-/* Стил при ховър */
 .nav-btn:hover {
     color: white;
     background-color: rgba(255, 255, 255, 0.08);
     transform: translateY(-3px);
 }
 
-/* Стил за АКТИВНИЯ бутон */
 .nav-btn.active {
     color: #FFD700;
     background: linear-gradient(to top, rgba(255, 215, 0, 0.1), transparent);
     border-bottom: 2px solid #FFD700;
 }
 
-/* --- НОВ СТИЛ ЗА ИЗОБРАЖЕНИЯТА --- */
 .nav-icon-img {
-    width: 34px;  /* Размер на иконката */
-    height: 34px;
-    object-fit: contain; /* Да не се разпъва грозно */
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
     margin-bottom: 3px;
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8)); /* Сянка за дълбочина */
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8));
     transition: all 0.3s ease;
 }
 
-/* Ефект върху картинката при ховър на бутона */
 .nav-btn:hover .nav-icon-img {
-    transform: scale(1.1); /* Леко уголемяване */
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); /* Златисто сияние */
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
 }
 
-/* Ефект върху картинката когато бутонът е АКТИВЕН */
 .nav-btn.active .nav-icon-img {
-    transform: scale(1.1);
+    transform: scale(1);
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)) brightness(1.1);
 }
 
@@ -92,20 +98,17 @@
 }
 
 
-/* --- ЦЕНТРАЛНА СЕКЦИЯ (Без промяна) --- */
-.top-bar-section.center {
-    justify-content: center;
-    flex-direction: column;
-}
+/* --- СТИЛОВЕ ЗА НИВО И XP (Които сега са вляво) --- */
 .level-indicator {
     font-weight: bold;
     color: #f1c40f;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     text-shadow: 1px 1px 2px black;
+    margin-left: 5px; /* Малко отстояние от ръба */
 }
 .top-xp-bar-outer {
-    width: 260px;
-    height: 20px;
+    width: 200px; /* Малко по-тесен бар, за да пасне добре вляво */
+    height: 16px;
     background-color: rgba(0,0,0,0.6);
     border-radius: 12px;
     overflow: hidden;
@@ -124,7 +127,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #fff;
     text-shadow: 1px 1px 2px black;
     white-space: nowrap;
@@ -135,8 +138,7 @@
 /* --- ДЯСНА СЕКЦИЯ (Без промяна) --- */
 .top-bar-section.right {
     justify-content: flex-end;
-    gap: 40px;
-    padding-right: 40px; /* Изравняваме симетрично с лявото */
+    gap: 30px;
 }
 
 .currency-container {

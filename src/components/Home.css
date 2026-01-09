@@ -1,47 +1,45 @@
 /* src/components/Home.css */
 
 /* =========================================
-   ОСНОВНА СТРУКТУРА И ФОН
+   ОСНОВНА СТРУКТУРА И ФОН (Без промяна)
    ========================================= */
 .home-screen {
     display: flex;
-    height: 100vh;
+    height: 105vh;
     background-image: url('/assets/fon.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: white;
     font-family: sans-serif;
-    /* Отстояние отгоре заради TopBar-а (който е 75px висок) */
-    padding-top: 80px;
+    padding-top: 35px;
     box-sizing: border-box;
-    position: relative; /* За позиционирането на логото */
+    position: relative;
 }
 
 .home-panel {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    /* Връщаме стандартното центриране за панелите, 
+       тъй като свитъкът вече не зависи от тях */
     justify-content: center;
     align-items: center;
-    /* Временно очертание, за да виждаш празните панели (махни го после) */
-    /* border: 1px dashed rgba(255,255,255,0.3); */
 }
 
-/* Разпределение на ширините */
 .left-panel { flex: 1; }
-.center-panel { flex: 2; margin-top: 15%; /* Малко нагоре за аватара */ }
+.center-panel { flex: 2; margin-top: 15%; }
 .right-panel { flex: 1; }
 
 
 /* =========================================
-   ЦЕНТРАЛНО ЛОГО
+   ЦЕНТРАЛНО ЛОГО (Без промяна)
    ========================================= */
 .floating-logo {
     position: absolute;
-    top: 27px; /* Точно под TopBar-а */
+    top: 57px;
     left: 50%;
-    transform: translateX(-50%); /* Центриране */
+    transform: translateX(-50%);
     width: 60%;
     max-width: 600px;
     height: auto;
@@ -57,45 +55,130 @@
 
 
 /* =========================================
-   ДЯСНА КОЛОНА: СВИТЪК С МИСИИ
+   АНИМИРАН СВИТЪК (НОВА ПОЗИЦИЯ И TOOLTIP)
    ========================================= */
-.missions-list {
-    /* Размери и позиция */
+
+/* 1. БАЗОВ КЛАС ЗА КОНТЕЙНЕРА НА СВИТЪКА */
+.scroll-container {
+    /* ПРОМЯНА: Абсолютно позициониране, за да е горе вляво */
+    position: absolute;
+    top: 100px; /* На същата височина като логото */
+    left: 100px; /* Отстояние от левия ръб */
+    /* Махаме старите margin-и */
+    margin: 0;
+    z-index: 20; /* Да сме сигурни, че е над панелите */
+
     width: 100%;
-    max-width: 400px;
-    min-height: 550px;
-    /* Връщаме го малко по-централно, сега когато нямаме леви бутони за баланс */
-    margin-right: 50px; 
+    max-width: 450px;
+
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    
+    cursor: pointer;
+    
+    /* ПРОМЯНА: Махаме overflow: hidden от тук, за да се вижда tooltip-а */
+    /* overflow: hidden; */
+    
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+}
+
+.scroll-container:hover {
+     filter: drop-shadow(0 8px 20px rgba(0,0,0,0.7));
+     transform: translateY(-2px);
+}
+
+
+/* 2. СЪСТОЯНИЕ: ЗАТВОРЕН (CLOSED) */
+.scroll-container.closed {
+    background-image: url('/assets/zatvorensvituk.png');
+    height: 200px;
+    /* Overflow трябва да е видим, за да се покаже подсказката извън кутията */
+    overflow: visible;
+}
+
+/* --- ПРОМЯНА: НОВ HOVER TOOLTIP (ПОДСКАЗКА) --- */
+/* Създаваме псевдо-елемент след затворения контейнер */
+.scroll-container.closed::after {
+    content: "Кликни за отваряне"; /* Текстът на подсказката */
+    
+    /* Позициониране */
+    position: absolute;
+    top: 65%; /* Точно под свитъка */
+    left: 52%;
+    transform: translateX(-50%); /* Центриране спрямо свитъка */
+    margin-top: 10px; /* Малко разстояние от свитъка */
+    
+    /* Стилизация на кутийката */
+    background-color: rgba(0, 0, 0, 0.8); /* Тъмен полупрозрачен фон */
+    color: #FFD700; /* Златист текст */
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    white-space: nowrap; /* Текстът да е на един ред */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    
+    /* Скрито по подразбиране */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Показване на подсказката при ховър */
+.scroll-container.closed:hover::after {
+    opacity: 1;
+    visibility: visible;
+    /* Леко движение нагоре при поява */
+    transform: translateX(-50%) translateY(-5px);
+}
+
+
+/* 3. СЪСТОЯНИЕ: ОТВОРЕН (OPEN) */
+.scroll-container.open {
+    background-image: url('/assets/otvorensvituk.png');
+    min-height: 600px;
+    height: auto;
+    /* ПРОМЯНА: Крием overflow само когато е отворен, за да не излиза текста при анимацията */
+    overflow: hidden; 
+}
+
+
+/* 4. СЪДЪРЖАНИЕ (ОБЩИ СТИЛОВЕ ЗА ТЕКСТА) */
+.scroll-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    /* Фон (Свитък) и отстояния */
-    background-image: url('/assets/svituk.png');
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* Padding горе, дясно, долу, ляво - пази текста вътре в свитъка */
-    padding: 80px 80px 80px 80px;
-
-    /* Стилове за текст (старо мастило) */
+    justify-content: center;
+    height: 100%;
     color: #3e2723;
     font-family: 'Comic Sans MS', 'Garamond', serif;
     font-weight: bold;
     text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
-
-    /* Нулиране */
-    background-color: transparent;
-    backdrop-filter: none;
-    box-shadow: none;
-    border-radius: 0;
-    margin-bottom: 0;
+    transition: opacity 0.4s ease-in-out;
 }
 
-/* Заглавието "МИСИИ ЗА ДЕНЯ" */
-.missions-list h4 {
-    margin-top: 0;
-    margin-bottom: 25px;
+/* --- Специфично съдържание когато е ЗАТВОРЕН --- */
+.closed-content {
+    /* ПРОМЯНА: Вече е празно, затова махаме padding-а */
+    padding: 0; 
+    animation: none;
+}
+/* Махаме стиловете за h4 и .click-hint, защото вече не съществуват в JSX */
+
+/* --- Специфично съдържание когато е ОТВОРЕН (Без промяна) --- */
+.open-content {
+    padding: 80px 105px 50px 85px; 
+    opacity: 0;
+    animation: fadeInDelayed 0.6s ease-in-out forwards;
+    animation-delay: 0.3s;
+}
+
+.open-content h4 {
+    margin-top: -12px;
+    margin-bottom: 40px;
     margin-left: 15px;
     font-size: 1.6rem;
     text-transform: uppercase;
@@ -103,8 +186,6 @@
     width: 100%;
     text-align: center;
 }
-
-/* Редове с отделните мисии */
 .mission-item {
     background-color: transparent;
     padding: 8px 0;
@@ -112,6 +193,10 @@
     font-size: 1.1rem;
     width: 100%;
     text-align: center;
-    border-bottom: 1px dashed rgba(62, 39, 35, 0.3); /* Пунктирана линия */
-    border-radius: 0;
+    border-bottom: 1px dashed rgba(62, 39, 35, 0.3);
+}
+
+@keyframes fadeInDelayed {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

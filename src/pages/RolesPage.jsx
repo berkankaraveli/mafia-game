@@ -1,18 +1,43 @@
+// src/components/RolesPage.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-// Тук по-късно ще импортнем ROLES от data/roles.js и ще ги покажем
+import TopBar from '../components/TopBar';
+// Увери се, че пътят до твоя roles.js файл е правилен!
+import { ROLES } from '../data/roles';
+import './RolesPage.css';
 
-const RolesPage = () => {
-  const pageStyle = {
-    display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-    height: '100vh', color: 'white', fontSize: '2rem', textShadow: '2px 2px 4px black'
-  };
-
+const RolesPage = ({ user }) => {
   return (
-    <div style={pageStyle}>
-      <h1>ВСИЧКИ РОЛИ</h1>
-      <p>(Тази страница е в процес на разработка)</p>
-      <Link to="/" className="big-play-btn" style={{marginTop: '20px', textDecoration: 'none', maxWidth: '200px' ,marginRight: '100px'}}>НАЗАД</Link>
+    <div className="roles-page-screen">
+      {/* Показваме TopBar само ако имаме потребител */}
+      {user && <TopBar user={user} />}
+
+      <div className="roles-content-container">
+        <h1 className="page-title">ОПИСАНИЕ НА РОЛИТЕ</h1>
+
+        <div className="roles-grid">
+          {ROLES.map((role) => (
+            <div key={role.id} className="role-card">
+              <div className="role-image-wrapper">
+                  {/* ПРОМЯНА: Тук директно използваме role.image,
+                     защото в твоя roles.js те са вече импортирани обекти.
+                  */}
+                  <img 
+                    src={role.image} 
+                    alt={role.name} 
+                    className="role-image" 
+                  />
+              </div>
+              <h3 className="role-name">{role.name}</h3>
+              <p className="role-description">{role.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <Link to="/" className="back-button-fixed">
+           НАЗАД КЪМ МЕНЮТО
+        </Link>
+      </div>
     </div>
   );
 };
