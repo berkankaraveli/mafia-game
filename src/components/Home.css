@@ -1,5 +1,8 @@
-/* Home.css */
+/* src/components/Home.css */
 
+/* =========================================
+   ОСНОВНА СТРУКТУРА И ФОН
+   ========================================= */
 .home-screen {
     display: flex;
     height: 100vh;
@@ -9,11 +12,10 @@
     background-repeat: no-repeat;
     color: white;
     font-family: sans-serif;
-    
-    /* НОВА ДОБАВКА: Отстояние отгоре заради TopBar */
-    /* Слагаме малко повече от височината на бара (70px), за да има въздух */
-    padding-top: 80px; 
-    box-sizing: border-box; /* Важно, за да не се счупи височината */
+    /* Отстояние отгоре заради TopBar-а (който е 75px висок) */
+    padding-top: 80px;
+    box-sizing: border-box;
+    position: relative; /* За позиционирането на логото */
 }
 
 .home-panel {
@@ -22,103 +24,67 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* Временно очертание, за да виждаш празните панели (махни го после) */
+    /* border: 1px dashed rgba(255,255,255,0.3); */
 }
 
+/* Разпределение на ширините */
 .left-panel { flex: 1; }
-/* Центърът е малко по-нагоре, за да не се закриват краката на аватара */
-.center-panel { flex: 2; margin-top: 15%; }
+.center-panel { flex: 2; margin-top: 15%; /* Малко нагоре за аватара */ }
 .right-panel { flex: 1; }
 
 
-/* --- ЛЯВА КОЛОНА: БУТОНИ --- */
+/* =========================================
+   ЦЕНТРАЛНО ЛОГО
+   ========================================= */
+.floating-logo {
+    position: absolute;
+    top: 27px; /* Точно под TopBar-а */
+    left: 50%;
+    transform: translateX(-50%); /* Центриране */
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    z-index: 10;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+    animation: dropIn 1s ease-out;
+}
 
-.big-play-btn {
-    font-weight: bold;
-    color: #cecece;
-    font-size: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-    padding: 18px 25px;
+@keyframes dropIn {
+    from { opacity: 0; top: 50px; }
+    to { opacity: 1; top: 27px; }
+}
+
+
+/* =========================================
+   ДЯСНА КОЛОНА: СВИТЪК С МИСИИ
+   ========================================= */
+.missions-list {
+    /* Размери и позиция */
     width: 100%;
-    max-width: 280px;
-    cursor: pointer;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-    background-image: url('/assets/background-btn.png');
-    background-size: 105% 105%;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 100px;
-}
-
-/* Специфично за ИГРАЙ бутона */
-.left-panel > .big-play-btn:first-child {
-    margin-bottom: 15px;
-}
-
-/* Контейнер меню */
-.menu-buttons-container {
+    max-width: 400px;
+    min-height: 550px;
+    /* Връщаме го малко по-централно, сега когато нямаме леви бутони за баланс */
+    margin-right: 50px; 
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 100%;
     align-items: center;
-}
-
-/* Ефекти на бутоните */
-.big-play-btn:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.15);
-}
-.big-play-btn:active {
-    transform: translateY(1px);
-    filter: brightness(0.9);
-}
-
-
-/* --- ДЯСНА КОЛОНА: СВИТЪК С МИСИИ --- */
-
-/* Старите стилове за .profile-card и .missions-list са премахнати.
-   Тук са новите само за свитъка. */
-
-.missions-list {
-    /* Задаваме размери на контейнера за свитъка */
-    width: 100%;
-    max-width: 400px; /* Може да се наложи да си поиграеш с това */
-    min-height: 550px; /* Височина, за да се разпъне хубаво картинката */
     
-    /* ФОН - СВИТЪК */
+    /* Фон (Свитък) и отстояния */
     background-image: url('/assets/svituk.png');
-    /* Разпъваме картинката точно по размерите на дива */
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-
-    /* ВАЖНО: Голям Padding! Това избутва текста навътре,
-       за да не се пише върху навитите краища на свитъка.
-       Стойностите са: Горе, Дясно, Долу, Ляво.
-       Може да се наложи да ги нагласиш според твоята картинка. */
+    /* Padding горе, дясно, долу, ляво - пази текста вътре в свитъка */
     padding: 80px 80px 80px 80px;
-    margin-right: 100px;
 
-    /* СТИЛ НА ТЕКСТА (Мастило) */
-    color: #3e2723; /* Тъмно кафяв цвят, като старо мастило */
-    font-family: 'Comic Sans MS', 'Garamond', serif; /* Примерен по-ръкописен шрифт */
+    /* Стилове за текст (старо мастило) */
+    color: #3e2723;
+    font-family: 'Comic Sans MS', 'Garamond', serif;
     font-weight: bold;
-    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4); /* Лека светла сянка за четливост */
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
 
-    /* Центриране на съдържанието вътре */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    /* Махаме старите фонове и ефекти */
+    /* Нулиране */
     background-color: transparent;
     backdrop-filter: none;
     box-shadow: none;
@@ -126,7 +92,7 @@
     margin-bottom: 0;
 }
 
-/* Заглавието */
+/* Заглавието "МИСИИ ЗА ДЕНЯ" */
 .missions-list h4 {
     margin-top: 0;
     margin-bottom: 25px;
@@ -138,47 +104,14 @@
     text-align: center;
 }
 
-/* Отделните редове с мисии */
+/* Редове с отделните мисии */
 .mission-item {
-    /* Махаме стария тъмен фон */
     background-color: transparent;
     padding: 8px 0;
     margin-bottom: 5px;
     font-size: 1.1rem;
     width: 100%;
-    text-align: center; /* Текстът подравнен вляво */
-    /* Лека пунктирана линия между задачите */
-    border-bottom: 1px dashed rgba(62, 39, 35, 0.3); 
+    text-align: center;
+    border-bottom: 1px dashed rgba(62, 39, 35, 0.3); /* Пунктирана линия */
     border-radius: 0;
-}
-
-/* Home.css */
-
-/* ... (всички твои стилове нагоре си остават непокътнати) ... */
-
-
-/* --- НОВ СТИЛ ЗА ЛЕТЯЩОТО ЛОГО --- */
-.floating-logo {
-    position: absolute; /* Отлепяме го от потока */
-    top: 27px; /* Слагаме го под TopBar-а (който е висок 70px + малко въздух) */
-    left: 50%; /* Започва от средата на екрана */
-    transform: translateX(-50%); /* Връщаме го назад с половината му ширина, за да се центрира идеално */
-    
-    /* Размери на логото */
-    width: 60%; /* Можеш да си играеш с този процент */
-    max-width: 600px; /* Да не става прекалено огромно на големи екрани */
-    height: auto;
-    
-    z-index: 10; /* Да сме сигурни, че е над фона и панелите, но под TopBar (който е 1000) */
-    
-    /* Лека сянка за обем */
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
-    
-    /* Анимация за появяване (по желание) */
-    animation: dropIn 1s ease-out;
-}
-
-@keyframes dropIn {
-    from { opacity: 0; top: 50px; }
-    to { opacity: 1; top: 27px; }
 }

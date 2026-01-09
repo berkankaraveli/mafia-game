@@ -1,27 +1,48 @@
 // src/components/TopBar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './TopBar.css';
 
+// --- ИМПОРТВАНЕ НА СНИМКИТЕ ЗА БУТОНИТЕ ---
+// Увери се, че снимките са в папката src/assets/
+import swordImg from '/assets/orujiq.png';
+import chestImg from '/assets/sanduk.png';
+import armorImg from '/assets/bronq.png';
+import bookImg from '/assets/kniga.png';
+import sealImg from '/assets/pechat.png';
+
+
 const TopBar = ({ user }) => {
-  // Изчисляване на XP процента
   const xpPercentage = user.level > 0 ? (user.xp / (user.level * 200)) * 100 : 0;
 
   return (
     <div className="top-bar">
-      {/* --- ЛЯВА ЧАСТ: ВАЛУТИ --- */}
-      <div className="top-bar-section left">
-        <div className="currency-item gold">
-          <span className="currency-icon">💰</span> {/* Замени с <img> по-късно */}
-          <span className="currency-amount">{user.gold}</span>
-        </div>
-        <div className="currency-item diamonds">
-          <span className="currency-icon">💎</span> {/* Замени с <img> по-късно */}
-          <span className="currency-amount">{user.diamonds}</span>
-        </div>
+      {/* --- ЛЯВА СЕКЦИЯ: НАВИГАЦИОННИ БУТОНИ --- */}
+      <div className="top-bar-section left nav-buttons">
+        <NavLink to="/game" className="nav-btn">
+            {/* Заместваме емотиконата със снимка */}
+            <img src={swordImg} alt="Играй" className="nav-icon-img" />
+            <span className="nav-text">ИГРАЙ</span>
+        </NavLink>
+        <NavLink to="/shop" className="nav-btn">
+            <img src={chestImg} alt="Магазин" className="nav-icon-img" />
+            <span className="nav-text">МАГАЗИН</span>
+        </NavLink>
+        <NavLink to="/inventory" className="nav-btn">
+            <img src={armorImg} alt="Инвентар" className="nav-icon-img" />
+            <span className="nav-text">ИНВЕНТАР</span>
+        </NavLink>
+        <NavLink to="/roles" className="nav-btn">
+            <img src={bookImg} alt="Роли" className="nav-icon-img" />
+            <span className="nav-text">РОЛИ</span>
+        </NavLink>
+        <NavLink to="/guild" className="nav-btn">
+            <img src={sealImg} alt="Гилдия" className="nav-icon-img" />
+            <span className="nav-text">ГИЛДИЯ</span>
+        </NavLink>
       </div>
 
-      {/* --- ЦЕНТРАЛНА ЧАСТ: ЛЕВЪЛ И XP --- */}
+      {/* --- ЦЕНТРАЛНА СЕКЦИЯ: ЛЕВЪЛ И XP (Без промяна) --- */}
       <div className="top-bar-section center">
         <div className="level-indicator">LEVEL {user.level}</div>
         <div className="top-xp-bar-outer">
@@ -33,18 +54,24 @@ const TopBar = ({ user }) => {
         </div>
       </div>
 
-      {/* --- ДЯСНА ЧАСТ: МЕНЮ ИКОНКИ --- */}
+      {/* --- ДЯСНА СЕКЦИЯ: ВАЛУТИ + ИКОНКИ (Без промяна) --- */}
       <div className="top-bar-section right">
-        {/* Засега са просто div-ове, по-късно ще ги направим Линкове */}
-        <Link to="/friends" className="icon-btn" title="Приятели">
-            👥
-        </Link>
-        <Link to="/help" className="icon-btn" title="Помощ и Контакти">
-            ❓
-        </Link>
-        <Link to="/settings" className="icon-btn" title="Настройки">
-            ⚙️
-        </Link>
+        <div className="currency-container">
+            <div className="currency-item gold">
+            <span className="currency-icon">💰</span>
+            <span className="currency-amount">{user.gold}</span>
+            </div>
+            <div className="currency-item diamonds">
+            <span className="currency-icon">💎</span>
+            <span className="currency-amount">{user.diamonds}</span>
+            </div>
+        </div>
+
+        <div className="icons-container">
+            <Link to="/friends" className="icon-btn" title="Приятели">👥</Link>
+            <Link to="/help" className="icon-btn" title="Помощ">❓</Link>
+            <Link to="/settings" className="icon-btn" title="Настройки">⚙️</Link>
+        </div>
       </div>
     </div>
   );
