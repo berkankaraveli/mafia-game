@@ -1,0 +1,260 @@
+/* src/components/InventoryPage.css */
+
+/* Основен контейнер, заема целия екран под TopBar-а */
+.inventory-page-screen {
+    height: 100vh;
+      position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    margin: 0 !important; z-index: 9999 !important;
+    /* Използваме твоя фон за консистентност */
+    background-image: url('/assets/fon.png');
+    background-size: cover;
+    background-position: center;
+    padding-top: 80px; /* Място за TopBar */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    overflow: hidden; /* Спираме глобалния скрол тук */
+    color: #e0e0e0;
+}
+
+.inventory-page-screen .layer-eyes {
+    /* Пробвай различни стойности тук през F12, докато паснат */
+    top: 9.7% !important; /* Използвай !important само ако иначе не захапва */
+    /* Може би трябва и ширината да се пипне */
+    width: 30%;
+}
+
+/* ПРИМЕР: Ако устата бяга нанякъде */
+.inventory-page-screen .layer-mouth {
+    top: 16% !important;
+    width: 48%;
+}
+
+.inventory-page-screen .layer-lower-face {
+    top: 35% !important;
+    width: 200%;
+}
+
+.inventory-page-screen .layer-body {
+    top: 10% !important;
+    left: 5% !important;
+    width: 90%;
+}
+
+.inventory-page-screen .layer-hair {
+    top: 10% !important;
+    width: 90%;
+}
+
+.inventory-page-screen .layer-nose {
+    top: 12% !important;
+    width: 23%;
+}
+
+.inventory-page-screen .layer-eyebrows {
+    top: 8.5% !important;
+    width: 23%;
+}
+
+/* Контейнер за основното оформление (двете колони) */
+.inventory-layout-container {
+    width: 95%;
+    max-width: 1400px;
+    height: calc(100vh - 100px); /* Височината на екрана минус TopBar и малко отстъп */
+    display: flex;
+    gap: 20px; /* Разстояние между лявата и дясната колона */
+    margin-bottom: 20px;
+}
+
+/* --- ЛЯВА КОЛОНА (САЙДБАР) --- */
+.inventory-sidebar-left {
+    width: 400px; /* Фиксирана ширина за аватара */
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Горна част на сайдбара (Преглед на аватара) */
+.avatar-preview-area {
+    flex: 1; /* Заема цялото място */
+    /* Тъмен полупрозрачен фон, подобно на снимката */
+    background-color: rgba(44, 62, 80, 0.9);
+    border: 2px solid rgba(255, 215, 0, 0.3); /* Тънка златна рамка */
+    border-radius: 15px;
+    padding: 20px;
+    color: #FFD700;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.avatar-preview-area h3 {
+    text-align: center;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Обвивка за твоя AvatarCreator */
+.avatar-creator-wrapper {
+    flex: 1;
+    /* Важно: Задаваме относителна позиция, за да работи AvatarCreator вътре */
+    position: relative; 
+    background-color: rgba(0, 0, 0, 0.3); /* Още по-тъмен фон зад героя */
+    border-radius: 12px;
+    overflow: hidden; /* Да не излизат части извън рамката */
+}
+
+
+/* --- ДЯСНА КОЛОНА (ИНВЕНТАР) --- */
+.inventory-main-content {
+    flex: 1; /* Заема останалото място */
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(236, 240, 241, 0.9); /* Светъл полупрозрачен фон за инвентара */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+/* Контейнер за табовете с категории */
+.category-tabs-container {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background-color: rgba(189, 195, 199, 0.8); /* По-тъмен фон за табовете */
+    overflow-x: auto; /* Скрол настрани, ако са много */
+    border-bottom: 2px solid #95a5a6;
+}
+
+/* Бутон за таб */
+.category-tab-btn {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ecf0f1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    transition: all 0.2s ease;
+}
+
+.category-tab-btn:hover {
+    background-color: #dce4e6;
+}
+
+.category-tab-btn.active {
+    background-color: #3498db; /* Активен син цвят */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Зона за скрол на решетката */
+.items-grid-scroll-area {
+    flex: 1;
+    overflow-y: auto; /* Вертикален скрол за предметите */
+    padding: 15px;
+}
+
+/* Решетка за предметите */
+.items-grid {
+    display: grid;
+    /* Автоматично побира колони с минимална ширина 90px */
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+}
+
+/* Карта за предмет в инвентара */
+.inventory-item-card {
+    position: relative;
+    aspect-ratio: 1 / 1; /* Квадратна форма */
+    background-color: #bdc3c7;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
+    overflow: hidden;
+}
+
+.inventory-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color: #3498db;
+}
+
+/* Стил за екипиран предмет */
+.inventory-item-card.equipped {
+    border: 3px solid #2ecc71; /* Зелена рамка */
+    background-color: #d5f5e3;
+}
+
+/* Placeholder за опцията "None" */
+.none-option {
+    font-size: 1rem;
+    color: #7f8c8d;
+    font-weight: bold;
+}
+
+/* Малка картинка в инвентара */
+.item-thumbnail {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+/* Бадж за екипиран предмет (зелена чавка) */
+.equipped-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* src/components/InventoryPage.css */
+
+/* ... всички останали стилове ... */
+
+/* --- БУТОН НАЗАД КЪМ НАЧАЛОТО --- */
+.back-to-home-btn {
+    margin-top: 20px; /* Разстояние от аватара */
+    display: block;
+    text-decoration: none;
+    background: linear-gradient(to bottom, #4a4a4a, #2b2b2b);
+    color: #FFD700;
+    padding: 15px 0;
+    text-align: center;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 2px solid #FFD700;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.back-to-home-btn:hover {
+    background: linear-gradient(to bottom, #5a5a5a, #3b3b3b);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.8), 0 0 10px rgba(255, 215, 0, 0.4);
+    transform: translateY(-3px);
+    color: white;
+}
