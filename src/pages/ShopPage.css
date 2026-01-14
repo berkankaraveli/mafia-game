@@ -1,0 +1,356 @@
+/* src/pages/ShopPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+.shop-page-screen {
+    background: url('/assets/fon.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Скриваме главния скрол */
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
+    font-family: 'Roboto Condensed', sans-serif; /* По-модерен шрифт за магазина */
+}
+
+/* ОБЩИ ЗАГЛАВИЯ НА СЕКЦИИ */
+.section-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: #c0a060; /* Златисто */
+    font-size: 1.5rem;
+    margin: 0 0 15px 0;
+    text-shadow: 2px 2px 4px black;
+    border-bottom: 2px solid rgba(192, 160, 96, 0.3);
+    padding-bottom: 5px;
+}
+
+
+/* ============================== */
+/* --- ГЛАВНА СЕКЦИЯ (ГОРНА) --- */
+/* ============================== */
+.shop-main-section {
+    display: flex;
+    flex: 1; /* Заема горната половина */
+    padding: 20px;
+    gap: 20px;
+    margin-top: 80px; /* Място за TopBar */
+    min-height: 0; /* Важно за скролването във flex item */
+}
+
+/* --- ЛЯВА ЧАСТ (СПИСЪК) --- */
+.shop-sidebar-left {
+    flex: 0 0 300px;
+    background: rgba(20, 20, 25, 0.8);
+    border: 2px solid #4a3f35;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    /* Леко наклонен дизайн ала Fortnite */
+    transform: skewX(-2deg);
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+}
+/* Контра-наклон за съдържанието вътре */
+.shop-sidebar-left > * { transform: skewX(2deg); }
+
+.bundles-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.bundle-list-item {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
+    border-left: 4px solid transparent;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #e0e0e0;
+}
+.bundle-list-item:hover { background: rgba(255,255,255,0.1); }
+.bundle-list-item.active {
+    background: linear-gradient(90deg, rgba(192, 160, 96, 0.3), transparent);
+    border-left-color: #c0a060;
+}
+/* Специален стил за Featured бъндъла (по-голям) */
+.bundle-list-item.featured-item {
+    background: linear-gradient(90deg, rgba(138, 43, 226, 0.3), transparent); /* Лилаво за епичност */
+    border-left-color: #8a2be2;
+    padding: 15px;
+}
+.bundle-list-item.featured-item .bundle-name-small {
+    font-size: 1.2rem; color: #e2c0ff;
+}
+
+.bundle-icon-placeholder {
+    width: 50px; height: 50px; background: rgba(0,0,0,0.3); margin-right: 10px; border-radius: 4px; overflow: hidden;
+}
+.bundle-icon-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+.bundle-name-small { font-weight: bold; font-size: 1rem; }
+.bundle-price-small { display: flex; align-items: center; gap: 5px; font-weight: bold; color: #ffd700; }
+
+
+/* --- ДЯСНА ЧАСТ (ПРЕГЛЕД) --- */
+.shop-preview-container {
+    flex: 1;
+    background: rgba(0,0,0,0.5);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid #c0a060;
+    box-shadow: 0 0 30px rgba(192, 160, 96, 0.2);
+    position: relative;
+}
+
+.bundle-preview-content {
+    height: 100%;
+    width: 100%;
+    /* Фонът на бъндъла ще се зареди тук */
+    background-size: cover;
+    background-position: center;
+}
+
+.preview-overlay {
+    /* Тъмен градиент отдолу нагоре, за да се чете текстът */
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 30%, transparent);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.preview-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: #fff;
+    font-size: 3rem;
+    margin: 0 0 10px 0;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #c0a060;
+    text-transform: uppercase;
+}
+.preview-description { color: #ccc; font-size: 1.2rem; max-width: 60%; margin-bottom: 20px; font-style: italic; }
+
+.preview-items-list h3 { color: #c0a060; margin-bottom: 5px; }
+.preview-items-list ul { list-style: none; padding: 0; margin: 0 0 25px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.preview-items-list li {
+    background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); color: #fff;
+}
+.item-type { color: #888; font-size: 0.8rem; margin-left: 5px; }
+
+.preview-actions {
+    display: flex;
+    gap: 20px;
+}
+.preview-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-family: 'Roboto Condensed', sans-serif; transition: all 0.2s;
+    transform: skewX(-10deg); /* Fortnite стил */
+}
+.preview-mode-btn {
+    background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.3);
+}
+.preview-mode-btn:hover { background: rgba(255,255,255,0.2); }
+.buy-btn.diamonds {
+    background: linear-gradient(45deg, #00BFFF, #007ba7); color: white; border: 2px solid #00BFFF; box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+}
+.buy-btn.diamonds:hover { background: linear-gradient(45deg, #40E0D0, #00BFFF); transform: skewX(-10deg) scale(1.05); }
+.buy-btn.gold {
+    background: linear-gradient(45deg, #ffd700, #daa520); color: #2a1a0a; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+.buy-btn.gold:hover { background: linear-gradient(45deg, #ffea70, #ffd700); transform: skewX(-10deg) scale(1.05); }
+
+
+/* ============================== */
+/* src/pages/ShopPage.css */
+
+/* ... (горните стилове остават същите) ... */
+
+
+/* src/pages/ShopPage.css */
+
+/* ... (Горната част на файла до "ДОЛНА СЕКЦИЯ" остава същата) ... */
+
+
+/* ============================== */
+/* --- ДОЛНА СЕКЦИЯ (ВАЛУТИ) --- */
+/* ============================== */
+
+/* Главният контейнер долу */
+.shop-currency-section {
+    background: rgba(0,0,0,0.6);
+    padding: 15px 20px;
+    /* Малко увеличих височината, за да дишат двете колони */
+    height: 250px;
+    box-sizing: border-box;
+    border-top: 2px solid #4a3f35;
+    /* НОВО: Flexbox за двете колони */
+    display: flex;
+    gap: 30px; /* Разстояние между колоните за диаманти и злато */
+}
+
+/* Стил за всяка колона (Диаманти и Злато) */
+.currency-column {
+    flex: 1; /* Всяка колона заема по 50% */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* За да не излиза скролът извън колоната */
+}
+
+.currency-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    /* По подразбиране е златисто от общия стил */
+}
+
+/* Специфичен цвят за заглавието на диамантите */
+.diamonds-theme .currency-title {
+    color: #00BFFF;
+    border-color: rgba(0, 191, 255, 0.3);
+}
+
+/* Гридът с картите вътре в колоната */
+.currency-grid {
+    display: flex;
+    gap: 15px;
+    height: calc(100% - 35px);
+    overflow-x: auto; /* Хоризонтален скрол за картите */
+    padding: 5px 5px 5px 0;
+}
+
+
+/* --- ОБЩ СТИЛ ЗА КАРТА (Важи и за двете) --- */
+.currency-card {
+    flex: 0 0 185px; /* Фиксирана ширина на карта */
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    border: 2px solid transparent; /* Базов бордюр */
+}
+
+.currency-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- ТЕМА ДИАМАНТИ (СИНЯ) --- */
+.currency-card.diamonds {
+    background: linear-gradient(to bottom, rgba(0, 191, 255, 0.1), rgba(0,0,0,0.5));
+    border-color: rgba(0, 191, 255, 0.3);
+}
+.currency-card.diamonds:hover {
+    border-color: #00BFFF;
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.3);
+}
+.currency-card.diamonds .currency-amount { color: #00BFFF; text-shadow: 0 0 10px #00BFFF; }
+.currency-card.diamonds .buy-currency-btn { background: #00BFFF; }
+.currency-card.diamonds:hover .buy-currency-btn { background: #40E0D0; box-shadow: 0 0 15px rgba(0, 191, 255, 0.8); }
+.currency-card.diamonds .currency-icon-large { filter: drop-shadow(0 0 10px rgba(0,191,255,0.8)); }
+
+
+/* --- ТЕМА ЗЛАТО (ЖЪЛТА/ОРАНЖЕВА) - НОВО! --- */
+.currency-card.gold {
+    background: linear-gradient(to bottom, rgba(255, 215, 0, 0.15), rgba(0,0,0,0.5));
+    border-color: rgba(255, 215, 0, 0.3);
+}
+.currency-card.gold:hover {
+    border-color: #ffd700; /* Златно */
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+.currency-card.gold .currency-amount {
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+}
+.currency-card.gold .buy-currency-btn {
+    background: linear-gradient(45deg, #ffd700, #ffb300); /* Златен градиент за бутона */
+    color: #2a1a0a; /* Тъмен текст за контраст */
+}
+.currency-card.gold:hover .buy-currency-btn {
+    background: linear-gradient(45deg, #ffea70, #ffd700);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+.currency-card.gold .currency-icon-large {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); /* Златно сияние на иконата */
+}
+
+
+/* --- ОБЩИ ЕЛЕМЕНТИ В КАРТАТА --- */
+
+/* Баджът "Популярен" */
+.popular-badge {
+    position: absolute; top: 23px; right: -32px; background: #b40000; color: black; padding: 3px 30px; transform: rotate(45deg); font-weight: bold; font-size: 0.7rem; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 1;
+}
+/* Ако картата е популярна, добавяме малко марджин отгоре */
+.currency-card.popular { margin-top: 5px; }
+/* Ако златна карта е популярна, подсилваме златния бордюр */
+.currency-card.gold.popular { border-color: #ffd700; }
+
+
+.currency-icon-large {
+    height: 50px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: transform 0.3s;
+}
+.currency-card:hover .currency-icon-large { transform: scale(1.1); }
+
+.currency-amount {
+    font-size: 1.3rem; font-weight: bold; display: flex; align-items: center; gap: 5px; margin: 5px 0; white-space: nowrap;
+}
+
+.buy-currency-btn {
+    width: 100%; padding: 8px; border: none; border-radius: 4px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+}
+
+.price-eur { color: #888; font-size: 0.8rem; margin-top: 3px; }
+
+/* Скролбарове (за хоризонталния скрол в колоните) */
+.currency-grid::-webkit-scrollbar { height: 6px; }
+.currency-grid::-webkit-scrollbar-thumb { background: #c0a060; border-radius: 3px; }
+.currency-grid::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+/* ... (други стилове) ... */
+
+/* НОВ СТИЛ ЗА БУТОНА ГОРЕ ВДЯСНО */
+/* НОВ СТИЛ ЗА ЧЕРВЕНАТА ВРАТИЧКА ГОРЕ ВДЯСНО */
+.shop-exit-door-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100; /* Да е над всичко */
+
+    /* Стилове, копирани от другите страници за консистентност */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; /* Малко по-голям бутон */
+    height: 42px;
+    
+    /* Червен градиент */
+    background: linear-gradient(45deg, #d9534f, #c9302c);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    
+    /* Сянка и рамка за дълбочина */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    border: 1px solid #c9302c;
+    
+    transition: all 0.2s ease-in-out;
+}
+
+.shop-exit-door-btn:hover {
+    background: linear-gradient(45deg, #e26662, #d9534f);
+    transform: translateY(-2px) scale(1.05); /* Леко подскачане и уголемяване */
+    box-shadow: 0 6px 12px rgba(217, 83, 79, 0.6); /* По-силна червена сянка */
+}
+
+.shop-exit-door-btn:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}

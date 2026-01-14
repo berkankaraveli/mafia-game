@@ -98,7 +98,7 @@ function App() {
           {/* Подаваме user и на ролите, за да се вижда TopBar */}
           <Route path="/roles" element={<RolesPage user={user} />} />
 
-          <Route path="/shop" element={<ShopPage />} />
+         <Route path="/shop" element={<ShopPage user={user} />} />
           <Route path="/guild" element={<GuildPage user={user} />} />
         </Routes>
       </div>
