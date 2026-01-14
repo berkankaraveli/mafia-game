@@ -1,209 +1,201 @@
 /* src/components/RolesPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
 
-/* --- ОСНОВНИ СТИЛОВЕ (Ядрената опция за цял екран остава) --- */
 .roles-page-screen {
-    position: fixed !important;
-    top: 0 !important; left: 0 !important;
-    width: 100vw !important; height: 100vh !important;
-    margin: 0 !important; z-index: 9999 !important;
-    
-    overflow-y: auto;
-    background-image: url('/assets/fon.png');
+    background: url('/assets/fon.png') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #e0e0e0;
-    font-family: 'Cinzel', serif;
-    padding-top: 80px !important;
-    /* КЛЮЧОВО: border-box навсякъде, за да не се бъркат размерите */
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-/* Уверяваме се, че всички елементи на страницата ползват този модел */
-.roles-page-screen * {
-    box-sizing: border-box;
-}
-
-.roles-content-container {
-    width: 100%;
-    max-width: 1400px;
-    padding: 20px;
-    padding-bottom: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.page-title {
-    color: #FFD700;
-    text-shadow: 2px 2px 4px #000000;
-    margin-bottom: 40px;
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-align: center;
-}
-
-/* --- РЕШЕТКА (GRID) --- */
-.roles-grid {
-    display: grid;
-    /* ПРОМЯНА: Използваме фиксирана ширина за колоните, за да са еднакви.
-       repeat(auto-fit, 250px) означава "събери колкото можеш колони
-       по точно 250px всяка". */
-    grid-template-columns: repeat(auto-fit, 250px);
-    gap: 30px;
-    width: 100%;
-    /* Центрираме цялата решетка в контейнера */
-    justify-content: center;
-}
-
-/* =========================================
-   3D FLIP CARD - ЕДНАКВИ РАЗМЕРИ
-   ========================================= */
-
-/* 1. ГЛАВЕН КОНТЕЙНЕР (Определя ФИКСИРАНИТЕ размери) */
-.role-card-container {
-    /* Ширината идва от грида (250px) */
-    /* ПРОМЯНА: Фиксирана височина за абсолютно всички карти */
-    height: 380px; 
-    perspective: 1500px; 
-    cursor: pointer;
-    /* Без рамки, без фонове тук */
-    background: transparent;
-}
-
-/* 2. ВЪТРЕШЕН КОНТЕЙНЕР (Въртенето) */
-.role-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transform-style: preserve-3d;
-    /* Важно: Заоблянето се задава тук и се пренася на децата */
-    border-radius: 20px;
-}
-
-/* ХОВЪР ЕФЕКТ: Само завъртане */
-.role-card-container:hover .role-card-inner {
-    transform: rotateY(180deg);
-}
-
-/* 3. ПРЕДНА И ЗАДНА ЧАСТ (Общи стилове за еднаквост) */
-.role-card-front, .role-card-back {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    /* КЛЮЧОВО ЗА ЕДНАКВОСТТА: И двете страни трябва да имат
-       абсолютно еднакво заобляне и никакви външни рамки,
-       които да променят размера им. */
-    border-radius: 20px;
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
-    -webkit-backface-visibility: hidden; 
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none; /* Гарантираме, че няма рамки по ръбовете */
-}
-
-/* --- ПРЕДНА ЧАСТ (Само чиста снимка) --- */
-.role-card-front {
-    background-color: transparent; /* Прозрачен фон, ако снимката не запълни */
-}
-
-.role-image-full {
-    width: 100%;
-    height: 100%;
-    /* КЛЮЧОВО: 'cover' кара снимката да запълни целия фиксиран размер,
-       като се изреже автоматично, за да пасне, без да се смачква. */
-    object-fit: cover;
-    object-position: top center;
-}
-
-/* --- ЗАДНА ЧАСТ (zadna.png + текст) --- */
-.role-card-back {
-    background-size: cover;
-    background-position: center;
-    transform: rotateY(180deg);
-    /* Лека вътрешна сянка за дълбочина, не променя размера */
-
-}
-
-/* Текстовият слой ВЪТРЕ в задната част */
-.role-text-overlay-back-delayed {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    /* Уверяваме се, че вътрешният слой не излиза извън картата */
-    width: 90%;
-    height: 90%;
-    border-radius: 15px;
-    /* Тази рамка е ВЪТРЕ и не променя външния размер заради box-sizing */
-    border: 1px solid rgba(255, 215, 0, 0.3);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.4s ease-in;
-    transition-delay: 0.3s;
+    box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
 }
 
-.role-card-container:hover .role-text-overlay-back-delayed {
-    opacity: 1;
-    transition-delay: 0s;
+/* Главен контейнер за двете колони */
+.roles-layout-container {
+    display: flex;
+    /* Използваме flex пропорции като в магазина */
+    flex: 6.5; 
+    padding: 20px 20px 10px 20px;
+    gap: 25px;
+    margin-top: 80px; /* Място за TopBar */
+    min-height: 0;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Стилове за шрифтовете */
-.role-name {
+
+/* ============================== */
+/* --- ЛЯВА КОЛОНА (СПИСЪК) --- */
+/* ============================== */
+.roles-sidebar-left {
+    flex: 0 0 300px;
+    background: rgba(20, 20, 25, 0.8);
+    border: 2px solid #4a3f35;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    /* Лек наклон за "як" ефект */
+    transform: skewX(-2deg);
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+/* Контра-наклон за съдържанието */
+.roles-sidebar-left > * { transform: skewX(2deg); }
+
+.sidebar-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: #c0a060;
+    font-size: 1.4rem;
     margin: 0 0 15px 0;
-    color: #FFD700;
-    font-size: 1.5rem;
-    text-transform: uppercase;
     text-shadow: 2px 2px 4px black;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.4);
-    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(192, 160, 96, 0.3);
+    padding-bottom: 5px;
+    flex-shrink: 0;
 }
 
-.role-description {
-    font-size: 0.95rem;
-    line-height: 1.4;
+.roles-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Елемент от списъка */
+.role-list-item {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
+    border-left: 4px solid transparent;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
     color: #e0e0e0;
-    font-family: 'Segoe UI', sans-serif;
-    text-shadow: 1px 1px 2px black;
+    border-radius: 4px;
+}
+
+.role-list-item:hover { background: rgba(255,255,255,0.1); }
+
+/* Избрана роля */
+.role-list-item.active {
+    background: linear-gradient(90deg, rgba(192, 160, 96, 0.3), transparent);
+    border-left-color: #c0a060;
+    padding-left: 15px; /* Леко отместване за ефект */
+}
+
+.role-item-icon {
+    width: 50px; height: 50px;
+    border-radius: 50%; /* Кръгла иконка */
+    background-size: cover;
+    background-position: top center; /* Фокус върху лицето на картата */
+    margin-right: 15px;
+    border: 2px solid #4a3f35;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.role-list-item.active .role-item-icon {
+    border-color: #c0a060;
+}
+
+.role-item-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    font-family: 'Cinzel Decorative', serif;
+}
+
+
+/* ============================== */
+/* --- ДЯСНА КОЛОНА (ДЕТАЙЛИ) --- */
+/* src/components/RolesPage.css */
+
+/* ... (кодът нагоре си остава същият) ... */
+
+/* ============================== */
+/* --- ДЯСНА КОЛОНА (ДЕТАЙЛИ) --- */
+/* ============================== */
+.roles-details-panel {
+    flex: 1;
+    background: rgba(0,0,0,0.8); /* Малко по-тъмен фон */
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid #c0a060;
+    box-shadow: 0 0 30px rgba(192, 160, 96, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Бутон за изход (червена вратичка) - без промяна */
+.roles-exit-door-btn {
+    position: absolute; top: 20px; right: 20px; z-index: 100; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: linear-gradient(45deg, #d9534f, #c9302c); color: white; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 1px solid #c9302c; transition: all 0.2s ease-in-out;
+}
+.roles-exit-door-btn:hover { background: linear-gradient(45deg, #e26662, #d9534f); transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 12px rgba(217, 83, 79, 0.6); }
+.roles-exit-door-btn:active { transform: translateY(0) scale(0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+
+/* --- ПРОМЕНИТЕ СА ТУК --- */
+
+/* Банер с голямата снимка */
+.role-banner-image {
+    /* ПРОМЯНА 1: Увеличаваме значително височината на снимката спрямо описанието.
+       Преди беше 1.5, сега го правим 4 пъти по-голямо от описанието. */
+    flex: 2;
+    background-size: cover;
+    /* ПРОМЯНА 2: Фокусираме фона върху горния център.
+       Така главата на героя винаги ще се вижда, а ще се реже само от краката. */
+    background-position: top center;
+    position: relative;
+    /* Добавяме лека сянка вътре, за да изпъкне */
+    box-shadow: inset 0 -50px 100px -20px rgba(0,0,0,0.8);
+}
+
+/* Тъмен слой върху банера за четливост на заглавието */
+.role-banner-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* По-висок и плавен градиент, за да се чете текста по-добре върху голямата снимка */
+    background: linear-gradient(to top, rgba(20, 20, 25, 1) 10%, rgba(20, 20, 25, 0.6) 50%, transparent 100%);
+    padding: 30px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(192, 160, 96, 0.2);
+}
+
+.selected-role-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: #fff;
+    font-size: 3rem;
     margin: 0;
-    /* Ограничаваме текста, за да не разпъва картата */
-    max-height: 60%;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #c0a060;
+    text-transform: uppercase;
+}
+
+/* Контейнер за описанието долу */
+.role-description-container {
+    /* ПРОМЯНА 3: Намаляваме относителния размер на описанието.
+       То вече ще заема по-малко място, но има скрол, така че няма проблем. */
+    flex: 1;
+    background: rgba(20, 20, 25, 1); /* Плътен фон, за да се слее с овърлея */
+    padding: 20px 25px;
+    /* Махаме горния бордър, защото овърлеят вече го играе тази роля */
+    /* border-top: 2px solid #c0a060; <-- ИЗТРИТО */
     overflow-y: auto;
 }
 
-/* --- БУТОН НАЗАД --- */
-.back-button-fixed {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-decoration: none;
-    background: linear-gradient(to bottom, #4a4a4a, #2b2b2b);
-    color: #FFD700;
-    padding: 12px 40px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border: 2px solid #FFD700;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-    transition: all 0.3s ease;
-    z-index: 10;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* ... (останалите стилове надолу са без промяна) ... */
+.role-description-container h3 {
+    font-family: 'Cinzel Decorative', serif; color: #c0a060; margin-top: 0; font-size: 1.3rem; border-bottom: 1px solid rgba(192, 160, 96, 0.3); padding-bottom: 10px; margin-bottom: 20px;
 }
-
-.back-button-fixed:hover {
-    background: linear-gradient(to bottom, #5a5a5a, #3b3b3b);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.8), 0 0 10px rgba(255, 215, 0, 0.4);
-    transform: translateX(-50%) translateY(-3px);
+.role-description-box p {
+    color: #d0d0d0; line-height: 1.8; font-size: 1.15rem; font-style: italic; text-align: justify;
 }
+.roles-list-scroll::-webkit-scrollbar, .role-description-container::-webkit-scrollbar { width: 6px; }
+.roles-list-scroll::-webkit-scrollbar-thumb, .role-description-container::-webkit-scrollbar-thumb { background: #c0a060; border-radius: 3px; }
+.roles-list-scroll::-webkit-scrollbar-track, .role-description-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
