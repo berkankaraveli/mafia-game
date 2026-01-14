@@ -1,0 +1,331 @@
+/* src/pages/GuildPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+/* --- ГЛАВЕН ЕКРАН --- */
+.guild-page-screen {
+    background: url('/assets/fon.png') no-repeat center center fixed;
+    background-size: cover;
+    /* ФИКСИРАНО: Височина точно колкото екрана и никакво скролване на body-то */
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
+}
+
+/* --- ОСНОВЕН КОНТЕЙНЕР (Държи двете колони) --- */
+.guild-layout-container {
+    display: flex;
+    padding: 0 20px 20px 20px;
+    gap: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    /* ФИКСИРАНО: Точно отстояние отгоре за TopBar-а */
+    margin-top: 80px; /* Предполагаме, че TopBar е около 60-80px */
+    /* ФИКСИРАНО: Изчисляваме точна височина, за да пасне в екрана без скрол */
+    height: calc(100vh - 100px); /* 100vh минус отстоянието отгоре и малко отдолу */
+    overflow: hidden; /* Гаранция, че нищо няма да излезе от този контейнер */
+}
+
+/* ============================= */
+/* --- ЛЯВА КОЛОНА (СПИСЪК) --- */
+/* ============================= */
+.guild-sidebar-left {
+    /* ФИКСИРАНО: Точна ширина, която не се променя */
+    flex: 0 0 320px;
+    width: 320px;
+    height: 100%; /* Заема цялата височина на родителя */
+    background: rgba(20, 20, 25, 0.85);
+    border: 2px solid #4a3f35;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.guild-list-header {
+    /* ФИКСИРАНО: Точна височина за хедъра */
+    height: 60px;
+    flex-shrink: 0; /* Забраняваме му да се свива */
+    padding: 0 15px; /* Падинг само хоризонтално, височината е фиксирана */
+    border-bottom: 2px solid #4a3f35;
+    background: rgba(40, 35, 30, 0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.guild-list-header h3 {
+    margin: 0;
+    font-family: 'Cinzel Decorative', serif;
+    color: #c0a060;
+    font-size: 1.1rem;
+    /* ФИКСИРАНО: Ако заглавието е дълго, да не чупи хедъра */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.create-guild-btn-small {
+    /* ... (старите стилове за бутона) ... */
+    background: linear-gradient(45deg, #c0a060, #a08040);
+    border: none;
+    color: #2a2a2a;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Cinzel Decorative', serif;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    flex-shrink: 0; /* Да не се мачка */
+}
+.create-guild-btn-small:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #d4b475, #c0a060);
+    box-shadow: 0 0 10px rgba(192, 160, 96, 0.4);
+}
+
+/* Зоната за скролване вляво */
+.guild-list-scroll-area {
+    flex: 1; /* Заема точно останалото място */
+    overflow-y: auto; /* Скролва се само вътре */
+    padding: 10px;
+    height: calc(100% - 60px); /* Допълнителна гаранция за височината */
+}
+
+/* Елемент от списъка */
+.guild-list-item {
+    /* ФИКСИРАНО: Фиксирана височина на всеки ред, за да е подредено */
+    height: 50px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #e0e0e0;
+    overflow: hidden; /* Скрива всичко, което излиза */
+}
+.guild-list-item:hover {
+    background: rgba(192, 160, 96, 0.15);
+    border-color: #c0a060;
+}
+.guild-list-item.active {
+    background: linear-gradient(90deg, rgba(192, 160, 96, 0.3), rgba(192, 160, 96, 0.1));
+    border-color: #c0a060;
+    box-shadow: inset 0 0 10px rgba(192, 160, 96, 0.2);
+}
+.guild-list-item.full { opacity: 0.7; }
+.guild-list-item.full .guild-item-members { color: #d9534f; }
+
+.guild-item-name {
+    font-weight: bold;
+    font-size: 0.95rem;
+    /* ФИКСИРАНО: Ключово за дълги имена! */
+    white-space: nowrap; /* Текстът на един ред */
+    overflow: hidden; /* Скрий излишното */
+    text-overflow: ellipsis; /* Добави многоточие (...) */
+    margin-right: 10px; /* Отстояние от брояча */
+}
+.guild-item-members {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    flex-shrink: 0; /* Броячът да не се свива */
+}
+
+
+/* ============================== */
+/* --- ДЯСНА КОЛОНА (ДЕТАЙЛИ) --- */
+/* ============================== */
+.guild-main-content {
+    /* ФИКСИРАНО: Заема останалата ширина */
+    flex: 1;
+    height: 100%; /* Заема цялата височина */
+    background: rgba(20, 20, 25, 0.85);
+    border: 2px solid #4a3f35;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Нищо не излиза навън */
+}
+
+/* Хедър на дясната колона */
+.guild-right-header {
+    /* ФИКСИРАНО: Точна височина */
+    height: 50px;
+    flex-shrink: 0; /* Не се свива */
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid rgba(192, 160, 96, 0.1);
+    background: rgba(0,0,0,0.2);
+    box-sizing: border-box;
+}
+
+/* Бутон за изход (вратичка) */
+.exit-door-btn-guild {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(45deg, #d9534f, #c9302c);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-in-out;
+}
+.exit-door-btn-guild:hover {
+    background: linear-gradient(45deg, #e26662, #d9534f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 83, 79, 0.4);
+}
+.exit-door-btn-guild:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Зоната за скролване вдясно */
+.guild-content-scroll-wrapper {
+    flex: 1; /* Заема точно останалото място */
+    overflow-y: auto; /* Скролва се само вътре */
+    padding: 20px;
+    height: calc(100% - 50px); /* Гаранция за височината */
+    box-sizing: border-box;
+}
+
+/* .guild-details-panel {
+    /* Този панел просто държи съдържанието вътре в скрол зоната */
+    /* Няма нужда от фиксирана височина, той расте според съдържанието, а родителят му скролва */
+/* } */
+
+/* --- СТИЛОВЕ ВЪТРЕ В ДЕТАЙЛИТЕ (Те могат да варират, но са затворени в скрол зоната) --- */
+.selected-guild-name {
+    /* ... (старите стилове) ... */
+    font-family: 'Cinzel Decorative', serif;
+    color: #c0a060;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-top: 0;
+    text-shadow: 2px 2px 4px black;
+    border-bottom: 2px solid rgba(192, 160, 96, 0.3);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    word-wrap: break-word; /* Ако името е абсурдно дълго, да се пренесе */
+}
+
+.guild-meta-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    font-size: 1rem;
+    color: #b0b0b0;
+    flex-wrap: wrap; /* Позволяваме пренасяне ако екрана е тесен */
+}
+.guild-meta-info .highlight { color: #fff; font-weight: bold; }
+
+.guild-description-box {
+    /* ... (старите стилове) ... */
+    background: rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 3px solid #c0a060;
+    margin-bottom: 30px;
+}
+.guild-description-box h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: #e0e0e0;
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+.guild-description-box p {
+    color: #d0d0d0;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-style: italic;
+    /* Текстът тук може да е дълъг, родителят .guild-content-scroll-wrapper ще се погрижи за скрола */
+}
+
+.main-action-btn, .guild-full-btn, .confirm-create-btn {
+    /* ... (стилове за бутоните - без промяна) ... */
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+.main-action-btn {
+    border: none; cursor: pointer; background: linear-gradient(45deg, #28a745, #218838); color: white; border: 2px solid #1e7e34; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+.main-action-btn:hover { background: linear-gradient(45deg, #34ce57, #28a745); transform: translateY(-2px); }
+.guild-full-btn {
+    border: 2px solid #d9534f; background: rgba(217, 83, 79, 0.2); color: #d9534f; cursor: not-allowed;
+}
+
+/* ПЛЕЙСХОЛДЪР */
+.no-selection-placeholder {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* ФИКСИРАНО: Заема цялата видима височина на скрол зоната за центриране */
+    min-height: 100%;
+    color: #808080;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.no-selection-placeholder h3 { font-family: 'Cinzel Decorative', serif; color: #a0a0a0; font-size: 1.6rem; margin-bottom: 15px; }
+
+/* ФОРМА ЗА СЪЗДАВАНЕ */
+.create-guild-form-container {
+    /* Формата може да е дълга, тя ще скролва */
+    padding-bottom: 20px;
+}
+.create-guild-form-container h2 { font-family: 'Cinzel Decorative', serif; color: #c0a060; text-align: center; font-size: 1.8rem; }
+.guild-lore-text { text-align: center; font-style: italic; color: #a0a0a0; margin-bottom: 25px; font-size: 0.95rem; }
+.creation-form { max-width: 450px; margin: 0 auto; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #c0a060; font-size: 0.9rem; }
+.form-group input {
+    width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 2px solid #4a3f35; border-radius: 4px; color: white; font-size: 1rem; box-sizing: border-box;
+}
+.form-group input:focus { border-color: #c0a060; outline: none; box-shadow: 0 0 10px rgba(192, 160, 96, 0.3); }
+.cost-display { text-align: center; font-size: 1.1rem; margin-bottom: 20px; color: #b0b0b0; }
+.gold-cost { color: gold; font-weight: bold; font-size: 1.3rem; }
+.error-text { color: #d9534f; text-align: center; font-weight: bold; margin-bottom: 15px; }
+.confirm-create-btn {
+    border: none; cursor: pointer; background: linear-gradient(45deg, #c0a060, #a08040); color: #2a1a0a; border: 2px solid #8a6a2a; box-shadow: 0 4px 15px rgba(192, 160, 96, 0.4);
+}
+.confirm-create-btn:hover:not(:disabled) { background: linear-gradient(45deg, #d4b475, #c0a060); transform: translateY(-2px); }
+.confirm-create-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(100%); }
+
+/* Скролбар стилизиране (без промяна) */
+.guild-list-scroll-area::-webkit-scrollbar,
+.guild-content-scroll-wrapper::-webkit-scrollbar { width: 6px; }
+.guild-list-scroll-area::-webkit-scrollbar-track,
+.guild-content-scroll-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+.guild-list-scroll-area::-webkit-scrollbar-thumb,
+.guild-content-scroll-wrapper::-webkit-scrollbar-thumb { background: #4a3f35; border-radius: 4px; border: 1px solid #8a6a2a; }

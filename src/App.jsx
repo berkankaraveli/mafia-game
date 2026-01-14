@@ -99,7 +99,7 @@ function App() {
           <Route path="/roles" element={<RolesPage user={user} />} />
 
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/guild" element={<GuildPage />} />
+          <Route path="/guild" element={<GuildPage user={user} />} />
         </Routes>
       </div>
     </Router>

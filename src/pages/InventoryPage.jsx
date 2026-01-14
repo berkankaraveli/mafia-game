@@ -7,9 +7,6 @@ import { INVENTORY_CATEGORIES, INVENTORY_ITEMS } from '../data/inventoryData';
 import './InventoryPage.css';
 
 // --- ИКОНИ ---
-// Пълният код за иконите е тук, без съкращения
-
-// SVG икона за вратичка/изход (по-сложна версия, ако решиш да я ползваш)
 const ExitIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
     <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h2v-4h4v-2h-4V7h-2v4H8v2h4z"/ >
@@ -18,7 +15,6 @@ const ExitIcon = () => (
   </svg>
 );
 
-// По-проста икона за изход (която използваме в момента)
 const SimpleExitIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -31,8 +27,6 @@ const SimpleExitIcon = () => (
 const InventoryPage = ({ user, savedAvatar, onSave }) => {
   const [activeCategoryId, setActiveCategoryId] = useState(INVENTORY_CATEGORIES[0].id);
   const [currentSelections, setCurrentSelections] = useState(savedAvatar);
-
-  // State за видимостта на съобщението за успех
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -41,13 +35,12 @@ const InventoryPage = ({ user, savedAvatar, onSave }) => {
       }
   }, [savedAvatar]);
 
-  // Ефект за автоматично скриване на съобщението след 3 секунди
   useEffect(() => {
       let timer;
       if (showSuccessMessage) {
           timer = setTimeout(() => {
               setShowSuccessMessage(false);
-          }, 3000); // 3000ms = 3 секунди
+          }, 3000);
       }
       return () => clearTimeout(timer);
   }, [showSuccessMessage]);
@@ -66,7 +59,6 @@ const InventoryPage = ({ user, savedAvatar, onSave }) => {
       if (onSave) {
           console.log("Запазване на аватара...", currentSelections);
           onSave(currentSelections);
-          // Показваме съобщението
           setShowSuccessMessage(true);
       }
   };
@@ -117,15 +109,10 @@ const InventoryPage = ({ user, savedAvatar, onSave }) => {
 
           <div className="items-grid-scroll-area">
              <div className="items-grid">
-              {activeCategoryId !== 'body' && (
-                  <div
-                    className={`inventory-item-card ${currentSelections[activeCategoryId] === null ? 'equipped' : ''}`}
-                    onClick={() => handleItemClick({ categoryId: activeCategoryId, image: null, name: 'None' })}
-                  >
-                    <div className="item-image-placeholder none-option">None</div>
-                    {currentSelections[activeCategoryId] === null && <div className="equipped-badge">✓</div>}
-                  </div>
-              )}
+              
+              {/* ПРЕМАХНАТО: Блокът за "None" опцията е изтрит оттук.
+                  Преди тук имаше проверка: {activeCategoryId !== 'body' && (...)} */}
+              
               {filteredItems.map(item => {
                 const isEquipped = currentSelections[item.categoryId] === item.image;
                 return (
