@@ -233,7 +233,7 @@
     position: relative;
     aspect-ratio: 1 / 1;
     /* Тъмен, полупрозрачен фон */
-    background: linear-gradient(to bottom right, rgba(60, 60, 70, 0.5), rgba(30, 30, 40, 0.8));
+    background: linear-gradient(to bottom right, rgba(202, 202, 202, 0.5), rgba(30, 30, 40, 0.8));
     border-radius: 12px;
     cursor: pointer;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
