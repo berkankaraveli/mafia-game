@@ -1,5 +1,5 @@
+// src/App.jsx
 import React, { useState, useRef, useEffect } from 'react';
-// ВАЖНИ ИМПОРТИ ЗА РУТИРАНЕТО
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -17,13 +17,11 @@ import GuildPage from './pages/GuildPage';
 function App() {
   // --- ГЛОБАЛЕН STATE ---
   const [isLoading, setIsLoading] = useState(true);
-  // Държим реф-а за експлозията тук, защото тя е глобална
   const particleContainerRef = useRef(null);
 
   // User State
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('mafia_user');
-    // ПРОМЯНА ТУК: Добавяме diamonds
     return saved ? JSON.parse(saved) : { name: 'Играч 1', level: 1, xp: 0, totalSpins: 0, gold: 500, diamonds: 50 };
   });
 
@@ -59,30 +57,48 @@ function App() {
   };
 
 
-
-  // 2. Ако е заредило, покажи приложението с Рутера
   return (
-    // Router обвива всичко
     <Router>
       <div className="App">
         {/* Експлозията е извън Routes, за да е винаги заредена в DOM-а */}
         <Explosion ref={particleContainerRef} />
 
-        {/* Тук дефинираме кой адрес коя страница отваря */}
+        {/* --- НОВО: Image Preloader (Скрит) (ОПЦИЯ 1) --- */}
+        {/* Това принуждава браузъра да държи картинките на текущия аватар в кеша,
+            дори когато сме на друга страница. */}
+        <div style={{ display: 'none', width: 0, height: 0, overflow: 'hidden' }}>
+            {Object.values(avatar).map((url, index) => (
+                // Рендерираме img таг само ако има URL (за да избегнем грешки с null)
+                url ? <img key={`preload-${index}`} src={url} alt="preload" /> : null
+            ))}
+            {/* Добавяме и логото, защото е важно за Home страницата */}
+            <img src="/assets/logobg2.png" alt="preload-logo" />
+        </div>
+        {/* ------------------------------------- */}
+
         <Routes>
-          {/* Главна страница (Лоби) - подаваме user и avatar */}
           <Route path="/" element={<Home user={user} avatar={avatar} />} />
 
-          {/* Страница за Игра - подаваме функцията за XP и реф-а за експлозията */}
           <Route
             path="/game"
             element={<GamePage addXP={addXP} particleCtrlRef={particleContainerRef} />}
           />
 
-          {/* Останалите страници */}
+          <Route
+            path="/inventory"
+            element={
+              <InventoryPage
+                user={user}
+                savedAvatar={avatar}
+                onSave={setAvatar}
+              />
+            }
+          />
+
+          {/* Подаваме user и на ролите, за да се вижда TopBar */}
+          <Route path="/roles" element={<RolesPage user={user} />} />
+
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
-          <Route path="/roles" element={<RolesPage />} />
           <Route path="/guild" element={<GuildPage />} />
         </Routes>
       </div>

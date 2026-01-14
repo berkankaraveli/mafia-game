@@ -270,3 +270,183 @@
     transform: translateX(-50%) translateY(-3px); /* Малко подскачане при ховър */
     color: white;
 }
+
+/* src/pages/InventoryPage.css */
+
+/* --- Стилове за новия хедър в лявата колона --- */
+
+/* Контейнерът, който държи заглавието и тикчето на един ред */
+.avatar-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Заглавието вляво, тикчето вдясно */
+    margin-bottom: 15px; /* Разстояние под хедъра преди аватара */
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Лека разделителна линия */
+}
+
+/* Уверяваме се, че заглавието няма излишни марджини, които да чупят подравняването */
+.avatar-header-container h3 {
+    margin: 0;
+    font-family: 'Cinzel Decorative', serif; /* Или твоя шрифт за заглавия */
+    color: #f0e6d2; /* Светъл цвят на текста */
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* --- Стил за новото бутонче-тикче --- */
+.save-avatar-tick-btn {
+    /* Зелен градиент */
+    background: linear-gradient(45deg, #28a745, #1e7e34);
+    color: white;
+    border: none;
+    /* Правим го кръгло */
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    /* Центрираме тикчето вътре */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 18px; /* Размер на тикчето */
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Ефект при минаване с мишката */
+.save-avatar-tick-btn:hover {
+    transform: scale(1.1); /* Леко уголемяване */
+    background: linear-gradient(45deg, #34ce57, #28a745); /* По-светло зелено */
+    box-shadow: 0 4px 8px rgba(100, 255, 100, 0.4); /* Зеленикава сянка */
+}
+
+/* Ефект при натискане */
+.save-avatar-tick-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* --- Почистване на старите стилове (ако ги имаш още) --- */
+/* Можеш да изтриеш .save-avatar-btn стиловете, ако вече не се ползват никъде */
+
+/* src/pages/InventoryPage.css */
+
+/* --- Стилове за новия контейнер на табовете и изхода --- */
+
+/* Този контейнер държи категориите вляво и червения бутон вдясно */
+.tabs-and-exit-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Разпъва ги в двата края */
+    margin-bottom: 15px; /* Разстояние до решетката с предмети */
+    padding-right: 5px; /* Малко отстояние от десния ръб */
+}
+
+/* Уверяваме се, че контейнерът с табовете не пречи на бутона */
+.category-tabs-container {
+    /* Може да се наложи да махнеш margin-bottom от стария стил на този клас,
+       защото вече се управлява от родителя .tabs-and-exit-container */
+    margin-bottom: 0 !important;
+    flex-grow: 1; /* Заема останалото място */
+    /* display: flex; и gap: ... си остават от стария CSS */
+}
+
+
+/* --- Стил за червения бутон "Вратичка" --- */
+.exit-door-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Размери на бутона */
+    width: 42px;
+    height: 42px;
+    margin-left: 15px; /* Разстояние от табовете */
+    
+    /* Цветове - Червено */
+    background: linear-gradient(45deg, #d9534f, #c9302c);
+    color: white; /* Цвят на иконата */
+    
+    border-radius: 8px; /* Леко заоблени краища */
+    text-decoration: none; /* Маха подчертаването на линка */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Ефект при минаване с мишката */
+.exit-door-btn:hover {
+    background: linear-gradient(45deg, #e26662, #d9534f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 83, 79, 0.4); /* Червеникава сянка */
+}
+
+/* Ефект при натискане */
+.exit-door-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Допълнително подсигуряване, че SVG иконата е с правилния цвят */
+.exit-door-btn svg {
+    stroke: currentColor; /* Използва цвета на текста (бял) */
+}
+
+/* src/pages/InventoryPage.css */
+
+/* --- Изскачащо съобщение за успех (Toast) --- */
+
+/* Контейнерът, който позиционира съобщението */
+.success-toast-container {
+    position: fixed;
+    bottom: 30px; /* Разстояние от дъното, когато е видимо */
+    left: 50%;
+    /* Центрираме го хоризонтално и го скриваме под екрана първоначално */
+    transform: translateX(-50%) translateY(150%); 
+    opacity: 0; /* Невидимо в началото */
+    z-index: 1000; /* Да сме сигурни, че е над всичко */
+    
+    /* Магията на анимацията - плавен преход за всички промени */
+    /* cubic-bezier прави движението по-живо, като леко "подскачане" */
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Когато добавим този клас чрез React, съобщението се появява */
+.success-toast-container.active {
+    /* Връщаме го на нормалната му вертикална позиция и го показваме */
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Самото съдържание на съобщението - визия */
+.success-toast-content {
+    background: rgba(40, 44, 52, 0.95); /* Тъмен фон, леко прозрачен */
+    color: #4ade80; /* Светло зелен текст */
+    padding: 16px 24px;
+    border-radius: 12px; /* Заоблени ъгли */
+    border: 2px solid #22c55e; /* Зелена рамка */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3); /* Дълбока сянка */
+    
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Разстояние между иконата и текста */
+    
+    font-family: 'Cinzel Decorative', serif; /* Твоя шрифт */
+    font-weight: bold;
+    font-size: 1.1rem;
+    white-space: nowrap; /* Текстът да е на един ред */
+}
+
+/* Иконката вътре в съобщението */
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #22c55e;
+    color: #1a1a1a;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 18px;
+}
