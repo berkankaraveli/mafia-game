@@ -32,7 +32,11 @@ export const INVENTORY_ITEMS = [
 
     // --- ДОЛНА ЧАСТ ---
     { id: 'lowerFace_1', categoryId: 'lowerFace', name: 'Стандартна долна част', image: '/assets/dolnachast.png' },
-    { id: 'lowerFace_2', categoryId: 'lowerFace', name: 'Без долна част', image: null },
+    { id: 'lowerFace_3', categoryId: 'lowerFace', name: 'Облекло-1', image: '/assets/obleklo1.png' },
+    { id: 'lowerFace_4', categoryId: 'lowerFace', name: 'Облекло-2', image: '/assets/obleklo2.png' },
+    { id: 'lowerFace_5', categoryId: 'lowerFace', name: 'Облекло-3', image: '/assets/obleklo3.png' },
+    { id: 'lowerFace_6', categoryId: 'lowerFace', name: 'Облекло-4', image: '/assets/obleklo4.png' },
+    { id: 'lowerFace_7', categoryId: 'lowerFace', name: 'Облекло-5', image: '/assets/obleklo5.png' },
 ];
 
 // Базова конфигурация (какво носи героя по подразбиране)

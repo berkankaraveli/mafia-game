@@ -1,6 +1,5 @@
 // src/components/InventoryPage.jsx
 import React, { useState } from 'react';
-// ПРОМЯНА 1: Добавяме Link към импортите
 import { Link } from 'react-router-dom'; 
 import TopBar from '../components/TopBar';
 import AvatarCreator from '../components/AvatarCreator';
@@ -8,10 +7,10 @@ import { INVENTORY_CATEGORIES, INVENTORY_ITEMS, DEFAULT_SELECTIONS } from '../da
 import './InventoryPage.css';
 
 const InventoryPage = ({ user }) => {
-  // ... (Целият код за състоянието и функциите си остава същият) ...
   const [activeCategoryId, setActiveCategoryId] = useState(INVENTORY_CATEGORIES[0].id);
   const [currentSelections, setCurrentSelections] = useState(DEFAULT_SELECTIONS);
   const filteredItems = INVENTORY_ITEMS.filter(item => item.categoryId === activeCategoryId);
+
   const handleItemClick = (item) => {
     setCurrentSelections(prevSelections => ({
       ...prevSelections,
@@ -23,9 +22,10 @@ const InventoryPage = ({ user }) => {
     <div className="inventory-page-screen">
       {user && <TopBar user={user} />}
 
+      {/* Контейнер за двете колони (Герой + Инвентар) */}
       <div className="inventory-layout-container">
         
-        {/* --- ЛЯВА КОЛОНА: АВАТАР И БУТОН НАЗАД --- */}
+        {/* --- ЛЯВА КОЛОНА: АВАТАР --- */}
         <div className="inventory-sidebar-left">
           <div className="avatar-preview-area">
             <h3>ТВОЯТ АВАТАР</h3>
@@ -33,11 +33,9 @@ const InventoryPage = ({ user }) => {
                  <AvatarCreator selections={currentSelections} />
             </div>
           </div>
-
         </div>
 
         {/* --- ДЯСНА КОЛОНА: ИНВЕНТАР --- */}
-        {/* ... (Останалата част от кода си остава същата) ... */}
         <div className="inventory-main-content">
           <div className="category-tabs-container">
             {INVENTORY_CATEGORIES.map(category => (
@@ -77,21 +75,19 @@ const InventoryPage = ({ user }) => {
                     )}
                      {isEquipped && <div className="equipped-badge">✓</div>}
                   </div>
-                  
                 );
               })}
             </div>
           </div>
         </div>
-            {/* ПРОМЯНА 2: Добавяме бутона НАЗАД под аватара */}
-          <Link to="/" className="back-to-home-btn">
-              ← НАЗАД КЪМ НАЧАЛОТО
-          </Link>
+      </div> {/* Край на inventory-layout-container */}
 
-      </div>
-      
+      {/* ПРОМЯНА: Бутонът НАЗАД вече е тук, извън колоните, в центъра */}
+      <Link to="/" className="back-to-home-btn-bottom">
+          ← НАЗАД КЪМ НАЧАЛОТО
+      </Link>
+
     </div>
-    
   );
 };
 
